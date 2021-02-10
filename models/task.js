@@ -16,6 +16,4 @@ const Task = sequelize.define('task', {
   },
 });
 
-module.exports = {
-  Task,
-};
+module.exports = { Task };
