@@ -11,7 +11,7 @@ router.delete('/', async (req, res) => {
       throw new Error('wrong index');
     }
 
-    const task = Task.destroy({
+    const task = await Task.destroy({
       where: {
         id: index,
       },
