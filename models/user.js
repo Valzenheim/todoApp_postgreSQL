@@ -1,5 +1,6 @@
 const sequelize = require('../db');
 const { DataTypes } = require('sequelize');
+const { Task } = require('./task');
 
 const User = sequelize.define('user', {
   id: {
@@ -16,3 +17,5 @@ const User = sequelize.define('user', {
     type: DatyaTypes.STRING,
   },
 });
+
+User.hasMany(Task);
