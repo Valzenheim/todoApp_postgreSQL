@@ -8,11 +8,14 @@ const Task = sequelize.define('task', {
     autoIncrement: true,
     unique: true,
   },
-  value: {
+  taskName: {
     type: DataTypes.STRING,
   },
-  status: {
+  done: {
     type: DataTypes.BOOLEAN,
+  },
+  ownerId: {
+    type: DataTypes.INTEGER,
   },
 });
 

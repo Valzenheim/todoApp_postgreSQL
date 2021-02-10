@@ -2,13 +2,17 @@ const Router = require('express');
 const router = new Router();
 const { Task } = require('../../models/task');
 
-router.post('/create', async (req, res) => {
+router.post('/', async (req, res) => {
   try {
     console.log(req.body);
 
-    const { value } = req.body;
+    const taskData = req.body;
 
-    const task = await Task.create({ value });
+    if (!taskData.taskName || !taskData.done || !taskData.ownerId) {
+      throw new Error('wrong task data');
+    }
+
+    const task = await Task.create(taskData);
 
     console.log(task);
 

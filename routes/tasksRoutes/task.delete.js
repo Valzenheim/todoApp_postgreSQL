@@ -2,10 +2,14 @@ const Router = require('express');
 const router = new Router();
 const { Task } = require('../../models/task');
 
-router.post('/remove', async (req, res) => {
+router.delete('/', async (req, res) => {
   try {
-    console.log('@@@@@@@ req.body:', req.body);
     const { index } = req.body;
+    console.log('@@@@@@@ req.body:', index);
+
+    if (!index) {
+      throw new Error('wrong index');
+    }
 
     const task = Task.destroy({
       where: {
