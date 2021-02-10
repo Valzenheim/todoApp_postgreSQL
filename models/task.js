@@ -1,7 +1,7 @@
 const sequelize = require('../db');
 const { DataTypes } = require('sequelize');
 
-export const Task = sequelize.define('task', {
+const Task = sequelize.define('task', {
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
@@ -15,3 +15,7 @@ export const Task = sequelize.define('task', {
     type: DataTypes.BOOLEAN,
   },
 });
+
+module.exports = {
+  Task,
+};

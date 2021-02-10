@@ -14,8 +14,12 @@ const User = sequelize.define('user', {
     unique: true,
   },
   password: {
-    type: DatyaTypes.STRING,
+    type: DataTypes.STRING,
   },
 });
 
 User.hasMany(Task);
+
+module.exports = {
+  User,
+};
