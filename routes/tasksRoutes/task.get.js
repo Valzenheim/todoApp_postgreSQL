@@ -2,9 +2,9 @@ const Router = require('express');
 const router = new Router();
 const { Task } = require('../../models/task');
 
-router.get('/', async (req, res) => {
+router.get('/:id', async (req, res) => {
   try {
-    console.log('@@@@@@@ ownerId:', req.params.id);
+    console.log('@@@@@@@ ownerId:', req.query.id);
 
     const task = await Task.findAll({ where: { ownerId: req.params.id } });
 

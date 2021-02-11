@@ -1,9 +1,10 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useContext, useEffect } from 'react';
 import Task from './components/Task';
 import { Footer } from './components/Footer';
 import Header from './components/Header';
 import './styles/style.css';
 import { useHttp } from '../../hooks/http.hook';
+import { AuthContext } from '../../Context/AuthContext';
 
 export default function TodoApp() {
   const { request } = useHttp();
@@ -11,9 +12,11 @@ export default function TodoApp() {
   const [form, setForm] = useState('');
   const [filtration, setFiltration] = useState('all');
   const [actives, setActives] = useState(null);
+  const { userId } = useContext(AuthContext);
 
   const fetchTasks = useCallback(async () => {
-    const fetched = await request('/api/list', 'post');
+    const fetched = await request(`/api/list/${1}`, 'get');
+    console.log('@@@@@@@ fetched:', fetched);
 
     setTaskArray([...fetched]);
 
@@ -112,15 +115,15 @@ export default function TodoApp() {
     if (filtration === 'all') {
       tasks = taskArray;
     } else if (filtration === 'active') {
-      tasks = taskArray.filter((x) => !x.checks);
+      tasks = taskArray.filter((x) => !x.done);
     } else if (filtration === 'done') {
-      tasks = taskArray.filter((x) => x.checks);
+      tasks = taskArray.filter((x) => x.done);
     }
 
     return tasks.map((item) => (
       <Task
         item={item}
-        key={item._id}
+        key={item.id}
         localItemRemover={localItemRemover}
         toggleStatus={toggleStatus}
       />

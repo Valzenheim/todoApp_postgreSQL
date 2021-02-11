@@ -7,7 +7,13 @@ export const useHttp = () => {
   const [backError, setBackError] = useState(null);
 
   const request = useCallback(
-    async (resUrl, resMethod = 'GET', body = null, resHeaders = {}) => {
+    async (
+      resUrl,
+      resMethod = 'GET',
+      resParams,
+      body = null,
+      resHeaders = {}
+    ) => {
       try {
         if (body) {
           body = JSON.stringify(body);
@@ -24,15 +30,17 @@ export const useHttp = () => {
           data: body,
           headers: resHeaders,
         });
-        const data = await response.json();
 
-        if (!response.ok) {
+        console.log('@@@@@@@ response:', response);
+        // const data = await response;
+
+        if (response.status !== 200) {
           throw new Error(
-            data.message || 'Something went wrong. Please try again'
+            response.message || 'Something went wrong. Please try again'
           );
         }
 
-        return data;
+        return response.data;
       } catch (e) {
         setBackError(e.message);
         throw e;
