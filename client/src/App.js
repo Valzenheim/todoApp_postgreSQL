@@ -1,24 +1,28 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import { BrowserRouter as Router } from 'react-router-dom';
+import { useAuth } from './hooks/auth.hook';
+import { pagination } from './routes';
+import { AuthContext } from './Context/AuthContext';
 
 function App() {
+  const {
+    token, userName, login, logout, userId,
+  } = useAuth();
+  const isAuthenticated = !!token;
+  const routes = pagination(isAuthenticated);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <AuthContext.Provider value={{
+      token, userName, login, logout, userId, isAuthenticated,
+    }}
+    >
+      <Router>
+        { isAuthenticated }
+        <div className="container">
+          {routes}
+        </div>
+      </Router>
+    </AuthContext.Provider>
   );
 }
 
