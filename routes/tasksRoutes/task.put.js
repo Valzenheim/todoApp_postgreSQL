@@ -10,10 +10,7 @@ router.put('/', async (req, res) => {
       throw new Error('wrong data');
     }
 
-    console.log('@@@@@@@ target, newValue:', target, newValue);
-
     const task = await Task.update(newValue, { where: target });
-    console.log('@@@@@@@ task:', task);
 
     return res.status(200).json(task);
   } catch (error) {

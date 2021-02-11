@@ -2,18 +2,11 @@ const Router = require('express');
 const router = new Router();
 const { Task } = require('../../models/task');
 
-router.get('/', async (req, res) => {
+router.get('/:id', async (req, res) => {
   try {
-    const ownerId = req.body;
-    console.log('@@@@@@@ owner:', ownerId);
+    console.log('@@@@@@@ ownerId:', req.params.id);
 
-    if (!ownerId) {
-      throw new Error('wrong owner');
-    }
-
-    const task = await Task.findAll({ where: ownerId });
-
-    console.log('@@@@@@@ task:', task);
+    const task = await Task.findAll({ where: { ownerId: req.params.id } });
 
     return res.status(200).json(task);
   } catch (e) {

@@ -5,7 +5,6 @@ const { Task } = require('../../models/task');
 router.delete('/', async (req, res) => {
   try {
     const { index } = req.body;
-    console.log('@@@@@@@ req.body:', index);
 
     if (!index) {
       throw new Error('wrong index');

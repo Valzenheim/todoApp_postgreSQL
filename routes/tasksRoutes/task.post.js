@@ -4,8 +4,6 @@ const { Task } = require('../../models/task');
 
 router.post('/', async (req, res) => {
   try {
-    console.log(req.body);
-
     const taskData = req.body;
 
     if (!taskData.taskName || !taskData.done || !taskData.ownerId) {
@@ -13,8 +11,6 @@ router.post('/', async (req, res) => {
     }
 
     const task = await Task.create(taskData);
-
-    console.log(task);
 
     return res.status(200).json(task);
   } catch (e) {
