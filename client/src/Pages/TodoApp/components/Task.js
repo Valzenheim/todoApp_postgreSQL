@@ -18,7 +18,7 @@ export default function Task({ localItemRemover, toggleStatus, item }) {
   const itemRemover = async () => {
     localItemRemover(item.id);
 
-    return await request('app/todoApp/removeOne', 'DELETE', { id: item.id });
+    return await request('api/list', 'delete', null, { index: item.id });
   };
 
   return (
