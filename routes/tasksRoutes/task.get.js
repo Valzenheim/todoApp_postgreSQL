@@ -2,7 +2,7 @@ const Router = require('express');
 const router = new Router();
 const { Task } = require('../../models/task');
 
-router.get('/:id', async (req, res) => {
+router.get('/', async (req, res) => {
   try {
     console.log('@@@@@@@ ownerId:', req.params.id);
 
