@@ -24,14 +24,15 @@ export const useHttp = () => {
           resHeaders.Authorization = `Bearer ${token}`;
         }
 
-        const response = axios({
+        const response = await axios({
           method: resMethod,
           url: resUrl,
           data: body,
           headers: resHeaders,
           params: resParams,
         });
-        const data = await response.json();
+
+        console.log('@@@@@@@ response:', response);
 
         if (response.status !== 200) {
           throw new Error(

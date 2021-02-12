@@ -6,9 +6,9 @@ router.post('/', async (req, res) => {
   try {
     const taskData = req.body;
 
-    // if (!taskData.taskName || !taskData.done || !taskData.ownerId) {
-    //   throw new Error('wrong task data');
-    // }
+    if (!taskData.taskName || !taskData.ownerId) {
+      throw new Error('wrong task data');
+    }
 
     const task = await Task.create(taskData);
 

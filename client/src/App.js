@@ -5,22 +5,24 @@ import { pagination } from './routes';
 import { AuthContext } from './Context/AuthContext';
 
 function App() {
-  const {
-    token, userName, login, logout, userId,
-  } = useAuth();
+  const { token, userName, login, logout, userId } = useAuth();
   const isAuthenticated = !!token;
   const routes = pagination(isAuthenticated);
 
   return (
-    <AuthContext.Provider value={{
-      token, userName, login, logout, userId, isAuthenticated,
-    }}
+    <AuthContext.Provider
+      value={{
+        token,
+        userName,
+        login,
+        logout,
+        userId,
+        isAuthenticated,
+      }}
     >
       <Router>
-        { isAuthenticated }
-        <div className="container">
-          {routes}
-        </div>
+        {isAuthenticated}
+        <div className="container">{routes}</div>
       </Router>
     </AuthContext.Provider>
   );

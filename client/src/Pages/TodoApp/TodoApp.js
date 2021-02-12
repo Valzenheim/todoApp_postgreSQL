@@ -14,22 +14,20 @@ export default function TodoApp() {
   const [actives, setActives] = useState(null);
   const { userId } = useContext(AuthContext);
 
+  const counter = useCallback(
+    (array) => {
+      const activeCount = array.filter((item) => !item.done).length;
+      return setActives(activeCount);
+    },
+    [taskArray]
+  );
+
   const fetchTasks = useCallback(async () => {
     const fetched = await request(`/api/list/${1}`, 'get');
     console.log('@@@@@@@ fetched:', fetched);
-
     setTaskArray([...fetched]);
-
-    const activeCount = fetched.filter((item) => !item.checks).length;
-
-    return setActives(activeCount);
+    return counter(fetched);
   }, [request]);
-
-  const counter = useCallback(() => {
-    const tasks = taskArray.filter((item) => !item.checks).length;
-
-    return setActives(tasks);
-  }, [taskArray]);
 
   useEffect(() => {
     fetchTasks();
@@ -45,73 +43,56 @@ export default function TodoApp() {
 
   const setEveryOneStatus = async () => {
     const oldTasks = [...taskArray];
-
     let newStatus = Boolean;
-
     oldTasks.filter((x) => !x.checks).length > 0
       ? (newStatus = true)
       : (newStatus = false);
-
     oldTasks.map((item) => (item.checks = newStatus));
-
     await request('/app/todoApp/changeEveryOneStatus', 'PUT', {
       status: newStatus,
     });
-
     counter();
-
     return setTaskArray(oldTasks);
   };
 
   const toggleStatus = (index, status) => {
     const tasks = [...taskArray];
-
-    const indexArr = taskArray.findIndex((el) => el._id === index);
-
-    tasks[indexArr].checks = status;
-
-    counter();
-
+    tasks[taskArray.findIndex((el) => el.id === index)].done = status;
+    counter(tasks);
     return setTaskArray([...tasks]);
   };
 
-  const localItemRemover = (item) => {
-    const tasks = taskArray.filter((x) => x._id !== item);
-
+  const localItemRemover = async (item) => {
+    const tasks = taskArray.filter((x) => x.id !== item);
+    console.log('@@@@@@@ tasks:', tasks);
     setTaskArray(tasks);
-
-    counter();
+    counter(tasks);
+    console.log('@@@@@@@ taskArray:', taskArray);
   };
 
   const addingNewTask = async () => {
     if (!/[0-9a-zA-Zа-яёА-ЯЁ]/i.test(form)) {
       return null;
     }
-
-    const data = await request('app/todoApp/newTask', 'POST', { value: form });
-
+    const data = await request('api/list', 'post', null, {
+      taskName: form,
+      ownerId: 1,
+    });
     const tasks = taskArray;
-
     tasks.push(data);
-
     setTaskArray(tasks);
-
-    counter();
-
+    counter(tasks);
     return setForm('');
   };
 
   const everyOneRemover = async () => {
     await request('app/todoApp/removeAllOfDone', 'DELETE');
-
     const tasks = taskArray.filter((x) => !x.checks);
-
     return setTaskArray(tasks);
   };
 
   const taskRender = () => {
     let tasks = [];
-
     if (filtration === 'all') {
       tasks = taskArray;
     } else if (filtration === 'active') {
@@ -119,7 +100,6 @@ export default function TodoApp() {
     } else if (filtration === 'done') {
       tasks = taskArray.filter((x) => x.done);
     }
-
     return tasks.map((item) => (
       <Task
         item={item}

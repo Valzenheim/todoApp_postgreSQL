@@ -7,12 +7,12 @@ import TodoApp from './Pages/TodoApp/TodoApp';
 export const pagination = (isAuth) => {
   // if (isAuth) {
   return (
-    <Switch>
-      <Route path="/todo_app" exact>
+    <>
+      <Route path="/">
         <TodoApp />
       </Route>
-      <Redirect to="/todo_app" />
-    </Switch>
+      {/* <Redirect to="/todo_app" /> */}
+    </>
   );
   // }
 
