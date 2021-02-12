@@ -44,15 +44,22 @@ export default function TodoApp() {
   const setEveryOneStatus = async () => {
     const oldTasks = [...taskArray];
     let newStatus = Boolean;
-    oldTasks.filter((x) => !x.checks).length > 0
+    oldTasks.filter((x) => !x.done).length > 0
       ? (newStatus = true)
       : (newStatus = false);
-    oldTasks.map((item) => (item.checks = newStatus));
-    await request('/app/todoApp/changeEveryOneStatus', 'PUT', {
-      status: newStatus,
+    oldTasks.map((item) => (item.done = newStatus));
+    await request('/api/list', 'put', null, {
+      target: { ownerId: 1 },
+      newValue: { done: newStatus },
     });
-    counter();
-    return setTaskArray(oldTasks);
+    setTaskArray(oldTasks);
+    counter(oldTasks);
+  };
+
+  const editTaskName = (target, value) => {
+    const task = taskArray.map((item) =>
+      item.id === target ? (item.taskName = value) : null
+    );
   };
 
   const toggleStatus = (index, status) => {
@@ -86,8 +93,10 @@ export default function TodoApp() {
   };
 
   const everyOneRemover = async () => {
-    await request('app/todoApp/removeAllOfDone', 'DELETE');
-    const tasks = taskArray.filter((x) => !x.checks);
+    await request('api/list', 'delete', null, {
+      deleteParams: { ownerId: 1, done: true },
+    });
+    const tasks = taskArray.filter((x) => !x.done);
     return setTaskArray(tasks);
   };
 
@@ -106,6 +115,7 @@ export default function TodoApp() {
         key={item.id}
         localItemRemover={localItemRemover}
         toggleStatus={toggleStatus}
+        editTaskName={editTaskName}
       />
     ));
   };

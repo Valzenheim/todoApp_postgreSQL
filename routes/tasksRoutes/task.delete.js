@@ -4,16 +4,15 @@ const { Task } = require('../../models/task');
 
 router.delete('/', async (req, res) => {
   try {
-    const { index } = req.body;
+    const { deleteParams } = req.body;
+    console.log('@@@@@@@ index:', deleteParams);
 
-    if (!index) {
+    if (!deleteParams) {
       throw new Error('wrong index');
     }
 
     const task = await Task.destroy({
-      where: {
-        id: index,
-      },
+      where: deleteParams,
     });
 
     return res.status(200).json(task);

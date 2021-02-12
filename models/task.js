@@ -13,6 +13,7 @@ const Task = sequelize.define('task', {
   },
   done: {
     type: DataTypes.BOOLEAN,
+    defaultValue: false,
   },
   ownerId: {
     type: DataTypes.INTEGER,

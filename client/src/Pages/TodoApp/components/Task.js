@@ -1,24 +1,42 @@
-import React from 'react';
+import React, { useState } from 'react';
 import trash from '../../../images/trash-alt-solid.svg';
 import check from '../../../images/check-solid.svg';
 import { useHttp } from '../../../hooks/http.hook';
 
-export default function Task({ localItemRemover, toggleStatus, item }) {
+export default function Task({
+  localItemRemover,
+  editTaskName,
+  toggleStatus,
+  item,
+}) {
   const { request } = useHttp();
+  const [formStatus, setFormStatus] = useState(false);
+  const [formValue, setFormValue] = useState(item.taskName);
 
   const statusChanger = async () => {
     toggleStatus(item.id, !item.done);
-
-    return await request('app/todoApp/setTaskStatus', 'PUT', {
-      id: item.id,
-      value: item.done,
+    return await request('api/list', 'put', null, {
+      target: { id: item.id },
+      newValue: { done: item.done },
     });
+  };
+
+  const setEditValue = (event) => {
+    return setFormValue(event.target.value);
   };
 
   const itemRemover = async () => {
     localItemRemover(item.id);
+    return await request('api/list', 'delete', null, {
+      deleteParams: { id: item.id },
+    });
+  };
 
-    return await request('api/list', 'delete', null, { index: item.id });
+  const eventAddition = () => {};
+
+  const setNewTaskValue = () => {
+    editTaskName(formValue, item.id);
+    return setFormStatus(!formStatus);
   };
 
   return (
@@ -32,7 +50,28 @@ export default function Task({ localItemRemover, toggleStatus, item }) {
       >
         <img className="markIcon" src={check} alt={check} />
       </div>
-      <span className="textArea">{item.taskName}</span>
+      <div
+        className="textArea"
+        onDoubleClick={() => {
+          setFormStatus(!formStatus);
+          eventAddition();
+        }}
+      >
+        {formStatus ? (
+          <input
+            className="editTask"
+            onChange={setEditValue}
+            value={formValue}
+            onKeyPress={(event) => {
+              if (event.key === 'Enter') {
+                setNewTaskValue();
+              }
+            }}
+          />
+        ) : (
+          item.taskName
+        )}
+      </div>
       <span
         className="remSpan"
         role="button"
