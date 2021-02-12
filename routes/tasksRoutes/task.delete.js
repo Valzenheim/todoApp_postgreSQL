@@ -2,17 +2,20 @@ const Router = require('express');
 const router = new Router();
 const { Task } = require('../../models/task');
 
-router.delete('/', async (req, res) => {
+router.delete('/:id', async (req, res) => {
   try {
-    const { deleteParams } = req.body;
-    console.log('@@@@@@@ index:', deleteParams);
+    const queryParams = req.query;
+    console.log(typeof queryParams.id);
+    console.log(typeof queryParams.done);
+    console.log('@@@111@@@@ index:', req.query);
+    console.log('@@@@222@@@ index:', typeof req.query);
 
-    if (!deleteParams) {
-      throw new Error('wrong index');
+    if (!req.query.deleteParams) {
+      throw new Error('wrong parameters');
     }
 
     const task = await Task.destroy({
-      where: deleteParams,
+      where: req.query.deleteParams,
     });
 
     return res.status(200).json(task);
