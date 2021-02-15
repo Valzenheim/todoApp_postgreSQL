@@ -2,7 +2,7 @@ const Router = require('express');
 const router = new Router();
 const { Task } = require('../../models/task');
 
-router.put('/', async (req, res) => {
+router.put('/list', async (req, res) => {
   try {
     const { target, newValue } = req.body;
 

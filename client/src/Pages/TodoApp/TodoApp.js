@@ -93,7 +93,7 @@ export default function TodoApp() {
   };
 
   const everyOneRemover = async () => {
-    await request('api/list', 'delete', null, {
+    await request(`api/list?ownerId=${1}&&done=${true}`, 'delete', null, {
       deleteParams: { ownerId: 1, done: true },
     });
     const tasks = taskArray.filter((x) => !x.done);

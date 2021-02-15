@@ -2,7 +2,7 @@ const Router = require('express');
 const router = new Router();
 const { Task } = require('../../models/task');
 
-router.post('/', async (req, res) => {
+router.post('/list', async (req, res) => {
   try {
     const taskData = req.body;
 

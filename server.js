@@ -1,8 +1,8 @@
 require('dotenv').config();
 const express = require('express');
 const sequelize = require('./db');
-const routes = require('./routes/routes');
-
+const klawSync = require('klaw-sync');
+const path = require('path');
 const bodyParser = require('body-parser');
 
 const PORT = process.env.PORT || 8080;
@@ -18,7 +18,22 @@ app.use((err, req, res, next) => {
 });
 
 app.use('/', express.static(__dirname + '/client/build/'));
-app.use('/api', routes);
+
+async function useControllers() {
+  const paths = klawSync(`${__dirname}/routes`, { nodir: true });
+  let controllersCount = 0;
+  paths.forEach((file) => {
+    if (
+      path.basename(file.path)[0] === '_' ||
+      path.basename(file.path)[0] === '.'
+    )
+      return;
+    app.use('/api', require(file.path));
+    controllersCount++;
+  });
+
+  console.info(`Total controllers: ${controllersCount}`);
+}
 
 const start = async () => {
   try {
@@ -29,4 +44,5 @@ const start = async () => {
     console.log('@@@@@@@ error:', e.message);
   }
 };
+useControllers();
 start();

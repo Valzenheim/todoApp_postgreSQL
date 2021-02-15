@@ -27,9 +27,7 @@ export default function Task({
 
   const itemRemover = async () => {
     localItemRemover(item.id);
-    return await request('api/list', 'delete', {
-      deleteParams: { id: item.id },
-    });
+    return await request(`api/list/?id=${item.id}`, 'delete');
   };
 
   const eventAddition = () => {};
