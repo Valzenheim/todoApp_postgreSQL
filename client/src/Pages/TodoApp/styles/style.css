@@ -1,184 +1,221 @@
-
-.body{
-    width: 100%;
+.body {
+  width: 100%;
 }
 
-
-.App{
-    display: block;
-    width: 500px;
-    padding-bottom: 10px;
-    margin: 50px auto auto auto;
-    border-radius: 10px;
-    box-shadow: 0 0 50px gray;
-    background-color: #DCDCDC;
+.App {
+  display: block;
+  width: 500px;
+  padding-bottom: 10px;
+  margin: 50px auto auto auto;
+  border-radius: 10px;
+  box-shadow: 0 0 50px gray;
+  background-color: #dcdcdc;
 }
 
-.formInput{
-    display:block;
-    width: 450px;
-    height: 25px;
-    font-size: 20px;
-    margin: 10px auto auto auto;
-    padding: 5px;
-    outline: none;
-    border: none;
-    border-bottom: 1px solid black;
-    background-color: #DCDCDC;
+.formInput {
+  display: block;
+  width: 450px;
+  height: 25px;
+  font-size: 20px;
+  margin: 10px auto auto auto;
+  padding: 5px;
+  outline: none;
+  border: none;
+  border-bottom: 1px solid black;
+  background-color: #dcdcdc;
 }
 
-.todoHeader{
-    text-align: center;
-    font-size: 30px;
-    color: gray;
+.editTaskInput {
+  display: block;
+  width: 400px;
+  height: 25px;
+  font-size: 20px;
+  padding: 5px;
+  outline: none;
+  border: none;
+  color: rgb(117, 0, 117);
+  border-bottom: 1px solid black;
+  background-color: #dcdcdc;
 }
 
-.active{
-    height: 50px;
-    border-bottom: 1px solid lightgray;
-    display: block;
+.todoHeader {
+  text-align: center;
+  font-size: 30px;
+  color: gray;
 }
 
-.active:hover{
-    background-color: #DCDCDC;
+.active {
+  height: 50px;
+  border-bottom: 1px solid lightgray;
+  display: block;
 }
 
-.completed{
-    height: 50px;
-    background-color: #C0C0C0;
-
+.active:hover {
+  background-color: #dcdcdc;
 }
 
-.completed .textArea{
-    text-decoration: line-through;
-    background-color: #C0C0C0;
+.completed {
+  height: 50px;
+  background-color: #c0c0c0;
 }
 
-.App .remSpan{
-    float: right;
-    height: 20px;
-    width: 20px;
-    margin: 10px  10px auto auto;
-    stroke-opacity: 0.25;
-    cursor: pointer;
+.completed .textArea {
+  text-decoration: line-through;
+  background-color: #c0c0c0;
 }
 
-.removeAll{
-    border: none;
-    border-radius: 5px;
-    background-color: #DCDCDC;
-    margin: 5px 5px auto 5px;
-    outline: none;
-    font-size: 20px;
-    width: 190px;
-    padding: 5px;
-}
-.removeAll:hover{
-    border: 1px solid #A9A9A9;
-    border-radius: 5px;
+.App .remSpan {
+  float: right;
+  height: 20px;
+  width: 20px;
+  margin: 10px 10px auto auto;
+  stroke-opacity: 0.25;
+  cursor: pointer;
 }
 
-.removeAll:active{
-    border: 1px solid red;
-    background-color: lightgray;
-
+.removeAll {
+  border: none;
+  border-radius: 5px;
+  background-color: #dcdcdc;
+  margin: 5px 5px auto 5px;
+  outline: none;
+  font-size: 20px;
+  width: 190px;
+  padding: 5px;
+}
+.removeAll:hover {
+  border: 1px solid #a9a9a9;
+  border-radius: 5px;
 }
 
-.activeBtn{
-    border: 2px solid red;
-    border-radius: 5px;
-    background-color: lightgray;
-    margin: 5px 5px auto 5px;
-    outline: none;
-
+.removeAll:active {
+  border: 1px solid red;
+  background-color: lightgray;
 }
 
-.sleepBtn{
-    border: 1px solid #A9A9A9;
-    border-radius: 5px;
-    margin: 5px 5px auto 5px;
-    background-color: #DCDCDC;
-    outline: none;
+.activeBtn {
+  border: 2px solid red;
+  border-radius: 5px;
+  background-color: lightgray;
+  margin: 5px 0 auto 15px;
+  outline: none;
 }
 
-.sleepBtn:hover{
-    border: 1px solid lightsalmon;
-    background-color: lightgray;
+.sleepBtn {
+  border: 1px solid #a9a9a9;
+  border-radius: 5px;
+  margin: 5px 0 auto 15px;
+  background-color: #dcdcdc;
+  outline: none;
 }
 
-.textArea{
-    display: inline-block;
-    margin: 10px auto auto 15px;
-    text-align: center;
-    background-color: #DCDCDC;
-    font-size: 25px;
-
+.sleepBtn:hover {
+  border: 1px solid lightsalmon;
+  background-color: lightgray;
 }
 
-.checkbox{
-    opacity: 0;
+.textArea {
+  display: inline-block;
+  margin: 10px auto auto 15px;
+  text-align: center;
+  background-color: #dcdcdc;
+  font-size: 25px;
 }
 
-.checkContainer{
-    display: inline-block;
-    height: 25px;
-    width: 25px;
-    border: 1px solid gray;
-    border-radius: 100%;
-    margin: -10px auto auto 10px;
-    vertical-align: middle;
-    cursor: pointer;
+.checkbox {
+  opacity: 0;
 }
 
-.complete .markIcon{
-    display: block;
+.checkContainer {
+  display: inline-block;
+  height: 25px;
+  width: 25px;
+  border: 1px solid gray;
+  border-radius: 100%;
+  margin: -10px auto auto 10px;
+  vertical-align: middle;
+  cursor: pointer;
 }
 
-.active .markIcon{
-    display: none;
+.complete .markIcon {
+  display: block;
 }
 
-#allComp{
-    opacity:0;
+.active .markIcon {
+  display: none;
 }
 
-.footer{
-    height: 50px;
+#allComp {
+  opacity: 0;
 }
 
-.selectAll{
-    width: 115px;
-    text-align: center;
-    display: inline-block;
-    margin: 15px 10px auto 10px;
-    cursor: pointer;
-    padding: 5px;
-    font-size: 20px;
+.footer {
+  height: 50px;
 }
 
-.selectAll:hover{
-    padding: 4px;
-    border: 1px solid #A9A9A9;
-    border-radius: 5px;
-    outline: none;
+.selectAll {
+  width: 115px;
+  text-align: center;
+  display: inline-block;
+  margin: 15px 20px auto 10px;
+  cursor: pointer;
+  padding: 5px;
+  font-size: 20px;
 }
 
-.selectAll:active{
-    border: 1px solid red;
-    background-color: lightgray;
+.selectAll:hover {
+  padding: 4px;
+  border: 1px solid #a9a9a9;
+  border-radius: 5px;
+  outline: none;
 }
 
-.logoutBtn{
-    text-align: right;
-    margin: 5px 0 auto auto;
-    height: 20px;
-    width: 20px;
+.selectAll:active {
+  border: 1px solid red;
+  background-color: lightgray;
 }
 
-.header{
-    margin-right: 30px;
-    text-align: right;
-    display: block;
-    font-size: 20px;
-    color: gray;
+.logoutBtn {
+  text-align: right;
+  margin: 5px 0 auto auto;
+  height: 20px;
+  width: 20px;
+}
+
+.header {
+  margin-right: 30px;
+  text-align: right;
+  display: block;
+  font-size: 20px;
+  color: gray;
+}
+
+.chronology_true,
+.chronology_false {
+  display: inline-block;
+  border: 1px solid orange;
+  border-radius: 5px;
+  background-color: #dcdcdc;
+  margin: 0 auto -10px 70px;
+  outline: none;
+  font-size: 20px;
+  padding: 5px;
+}
+
+.upIcon,
+.downIcon {
+  color: black;
+}
+
+.chronology_true .downIcon {
+  display: none;
+}
+.chronology_true .upIcon {
+  display: block;
+}
+.chronology_false .downIcon {
+  display: block;
+}
+.chronology_false .upIcon {
+  display: none;
 }

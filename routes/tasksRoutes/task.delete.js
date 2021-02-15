@@ -4,12 +4,6 @@ const { Task } = require('../../models/task');
 
 router.delete('/list', async (req, res) => {
   try {
-    const queryParams = req.query;
-    console.log(typeof queryParams.id);
-    console.log(typeof queryParams.done);
-    console.log('@@@111@@@@ index:', req.query);
-    console.log('@@@@222@@@ index:', typeof req.query);
-
     if (!req.query) {
       throw new Error('wrong parameters');
     }

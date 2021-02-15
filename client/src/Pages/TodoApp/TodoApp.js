@@ -23,8 +23,7 @@ export default function TodoApp() {
   );
 
   const fetchTasks = useCallback(async () => {
-    const fetched = await request(`/api/list/${1}`, 'get');
-    console.log('@@@@@@@ fetched:', fetched);
+    const fetched = await request(`/api/list/?userId=${1}`, 'get');
     setTaskArray([...fetched]);
     return counter(fetched);
   }, [request]);
@@ -56,10 +55,22 @@ export default function TodoApp() {
     counter(oldTasks);
   };
 
-  const editTaskName = (target, value) => {
-    const task = taskArray.map((item) =>
+  const editTaskName = async (target, value) => {
+    const tasks = taskArray.map((item) =>
       item.id === target ? (item.taskName = value) : null
     );
+    await request('api/list', 'put', null, {
+      target: { id: target },
+      newValue: { taskName: value },
+    });
+  };
+
+  const setHronology = async (chronoStatus) => {
+    const data = await request(
+      `api/list/?userId=${1}&&chrono=${chronoStatus}`,
+      'get'
+    );
+    setTaskArray(data);
   };
 
   const toggleStatus = (index, status) => {
@@ -71,10 +82,8 @@ export default function TodoApp() {
 
   const localItemRemover = async (item) => {
     const tasks = taskArray.filter((x) => x.id !== item);
-    console.log('@@@@@@@ tasks:', tasks);
     setTaskArray(tasks);
     counter(tasks);
-    console.log('@@@@@@@ taskArray:', taskArray);
   };
 
   const addingNewTask = async () => {
@@ -90,14 +99,6 @@ export default function TodoApp() {
     setTaskArray(tasks);
     counter(tasks);
     return setForm('');
-  };
-
-  const everyOneRemover = async () => {
-    await request(`api/list?ownerId=${1}&&done=${true}`, 'delete', null, {
-      deleteParams: { ownerId: 1, done: true },
-    });
-    const tasks = taskArray.filter((x) => !x.done);
-    return setTaskArray(tasks);
   };
 
   const taskRender = () => {
@@ -151,7 +152,7 @@ export default function TodoApp() {
           active={actives}
           setFilter={changeFilter}
           changeAll={setEveryOneStatus}
-          everyRemove={everyOneRemover}
+          setHronology={setHronology}
         />
       </div>
     </div>

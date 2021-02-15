@@ -33,7 +33,7 @@ export default function Task({
   const eventAddition = () => {};
 
   const setNewTaskValue = () => {
-    editTaskName(formValue, item.id);
+    editTaskName(item.id, formValue);
     return setFormStatus(!formStatus);
   };
 
@@ -57,9 +57,10 @@ export default function Task({
       >
         {formStatus ? (
           <input
-            className="editTask"
+            className="editTaskInput"
             onChange={setEditValue}
             value={formValue}
+            autoFocus={true}
             onKeyPress={(event) => {
               if (event.key === 'Enter') {
                 setNewTaskValue();
