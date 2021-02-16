@@ -65,12 +65,12 @@ export default function TodoApp() {
     });
   };
 
-  const setHronology = async (chronoStatus) => {
+  const setChronology = async (chronoStatus) => {
     const data = await request(
       `api/list/?userId=${1}&&chrono=${chronoStatus}`,
       'get'
     );
-    setTaskArray(data);
+    return setTaskArray(data);
   };
 
   const toggleStatus = (index, status) => {
@@ -152,7 +152,7 @@ export default function TodoApp() {
           active={actives}
           setFilter={changeFilter}
           changeAll={setEveryOneStatus}
-          setHronology={setHronology}
+          setChronology={setChronology}
         />
       </div>
     </div>

@@ -2,19 +2,29 @@ const Router = require('express');
 const router = new Router();
 const { Task } = require('../../models/task');
 
-router.get('/list', async (req, res) => {
+router.get('/list/', async (req, res) => {
   try {
-    console.log('@@@@@@@ ownerId:', req.query);
+    console.log('@@@@@@@ ownerId:', req.query.chrono);
 
-    const { userId } = req.query;
-    const { filter } = req.query;
-    const { chrono } = req.query;
+    const userId = req.query.userId;
+    let filter = req.query.filter;
+    let chrono = req.query.chrono;
+    let orderType = null;
 
-    if (!filter) filter = 'all';
-    if (!chrono) chrono = 'true';
+    !filter ? (filter = 'all') : null;
+    !chrono ? (chrono = 'true') : null;
+    chrono ? (orderType = [['updatedAt', 'DESC']]) : null;
+    console.log('@@@@@@@ filter:', filter);
+    console.log('@@@@@@@ chrono:', chrono);
+    let task = null;
 
     if (filter === 'all') {
-      const task = await Task.findAll({ where: { ownerId: userId } });
+      task = await Task.findAll({
+        where: { ownerId: userId },
+        order: orderType,
+      });
+    } else if (filter === 'done') {
+    } else if (filter === 'active') {
     }
 
     return res.status(200).json(task);
