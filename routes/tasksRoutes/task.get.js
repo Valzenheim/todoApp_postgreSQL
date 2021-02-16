@@ -10,18 +10,17 @@ router.get('/list/', async (req, res) => {
     let filter = req.query.filter;
     let chrono = req.query.chrono;
 
-    !filter ? (filter = 'all') : null;
-    !chrono ? (chrono = 'false') : null;
+    !chrono ? (chrono = false) : null;
     console.log('@@@@@@@ filter:', filter);
     console.log('@@@@@@@ chrono:', chrono);
     let task = null;
 
     if (filter === 'all') {
       task = await Task.findAll({
-        where: { 
+        where: {
           ownerId: userId,
-          done: filter && filter!==undefined ?   
-         },
+          done: filter !== undefined ? (!!filter ? 'true' : 'false') : null,
+        },
         order: !chrono ? [['updatedAt', 'DESC']] : [['updatedAt']],
       });
     } else if (filter === 'done') {
