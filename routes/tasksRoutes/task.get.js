@@ -4,28 +4,31 @@ const { Task } = require('../../models/task');
 
 router.get('/list/', async (req, res) => {
   try {
-    console.log('@@@@@@@ ownerId:', req.query.chrono);
+    
 
-    const userId = req.query.userId;
-    let filter = req.query.filter;
-    let chrono = req.query.chrono;
+    let { userId, filter, chrono } = req.query;
 
-    !chrono ? (chrono = false) : null;
+    console.log('@@@@@@@ ownerId:', userId);
     console.log('@@@@@@@ filter:', filter);
     console.log('@@@@@@@ chrono:', chrono);
-    let task = null;
+    const queryParams = {
+      where: {
+        ownerId = userId,
+        
+      }
 
-    if (filter === 'all') {
-      task = await Task.findAll({
-        where: {
-          ownerId: userId,
-          done: filter !== undefined ? (!!filter ? 'true' : 'false') : null,
-        },
-        order: !chrono ? [['updatedAt', 'DESC']] : [['updatedAt']],
-      });
-    } else if (filter === 'done') {
-    } else if (filter === 'active') {
     }
+
+    const task = await Task.findAll({
+      where: {
+        ownerId: userId,
+        done: filter !== 'undefined' ? !!filter.toString() : undefined,
+      },
+      order:
+        chrono !== 'undefined' && !chrono
+          ? [['createdAt', 'DESC']]
+          : [['createdAt']],
+    });
 
     return res.status(200).json(task);
   } catch (e) {
