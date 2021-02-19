@@ -26,7 +26,6 @@ function App() {
       }}
     >
       <Router>
-        {isAuth}
         <div className="container">{routes}</div>
       </Router>
     </AuthContext.Provider>
