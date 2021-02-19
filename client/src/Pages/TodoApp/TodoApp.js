@@ -78,7 +78,6 @@ export default function TodoApp() {
       `api/list/?ownerId=${userId}&chrono=${chronoStatus}&filter=${filtration}`,
       'get'
     );
-    console.log('@@@@@@@ data:', data);
     setChrono(chronoStatus);
     setTaskArray([...data]);
   };

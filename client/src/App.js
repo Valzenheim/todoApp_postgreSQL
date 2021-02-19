@@ -7,14 +7,11 @@ import {
 } from 'react-router-dom';
 import { useAuth } from './hooks/auth.hook';
 import { AuthContext } from './Context/AuthContext';
-import LoginPage from './Pages/LoginPage/LoginPage';
-import RegisterPage from './Pages/RegisterPage/RegisterPage';
-import TodoApp from './Pages/TodoApp/TodoApp';
-import pageRoute from './routes';
+import { pageRoute } from './routes';
 
 function App() {
   const { token, userName, login, logout, userId } = useAuth();
-  const isAuth = !!token;
+  const isAuth = true;
   const routes = pageRoute(isAuth);
 
   return (

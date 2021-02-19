@@ -19,14 +19,9 @@ app.use((error, req, res, next) => {
 });
 
 app.use(express.static(path.join(__dirname, 'client/build')));
-// app.use('public', express.static(path.join(__dirname, 'public')));
 app.get('/api/test', (req, res, next) => {
   res.json({ aaa: 'bbb' });
-  console.log(111111111);
   next();
-});
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname + '/client/build/index.html'));
 });
 
 async function useControllers() {
@@ -57,6 +52,8 @@ const start = async () => {
 
 useControllers();
 
-// app.use('/*', express.static(__dirname + '/client/build/'));
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname + '/client/build/index.html'));
+});
 
 start();
