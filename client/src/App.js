@@ -11,7 +11,7 @@ import { pageRoute } from './routes';
 
 function App() {
   const { token, userName, login, logout, userId } = useAuth();
-  const isAuth = true;
+  const isAuth = !!token;
   const routes = pageRoute(isAuth);
 
   return (
@@ -27,7 +27,7 @@ function App() {
     >
       <Router>
         {isAuth}
-        {routes}
+        <div className="container">{routes}</div>
       </Router>
     </AuthContext.Provider>
   );

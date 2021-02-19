@@ -13,8 +13,7 @@ export default function TodoApp() {
   const [filtration, setFiltration] = useState('all');
   const [actives, setActives] = useState(null);
   const [chrono, setChrono] = useState(false);
-  const [userId, setUserId] = useState(1);
-  // const { userId } = useContext(AuthContext);
+  const { userId } = useContext(AuthContext);
 
   const counter = useCallback(
     (array) => {
@@ -25,6 +24,7 @@ export default function TodoApp() {
   );
 
   const fetchTasks = useCallback(async () => {
+    console.log('@@@@@@@ userId:', userId);
     const fetched = await request(`/api/list/?ownerId=${userId}`, 'get');
     setTaskArray([...fetched]);
     return counter(fetched);

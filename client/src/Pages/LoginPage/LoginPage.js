@@ -9,8 +9,8 @@ export default function LoginPage() {
   const { request, backError, clearError } = useHttp();
   const [error, setError] = useState(null);
   const [form, setForm] = useState({
-    login: '',
-    password: ''
+    name: '',
+    password: '',
   });
 
   const changeHandler = (event) => {
@@ -20,22 +20,24 @@ export default function LoginPage() {
   const loginHandler = async () => {
     clearError();
 
-    if (!/[0-9a-zA-Zа-яёА-ЯЁ]/i.test(form.login)
-        && !/[0-9a-zA-Zа-яёА-ЯЁ]/i.test(form.password)){
-      return setError( 'Wrong user data. Please try again' );
+    if (
+      !/[0-9a-zA-Zа-яёА-ЯЁ]/i.test(form.name) &&
+      !/[0-9a-zA-Zа-яёА-ЯЁ]/i.test(form.password)
+    ) {
+      return setError('Wrong user data. Please try again');
     }
 
-      const data = await request('/app/auth/login', 'post', { ...form });
+    const data = await request('/api/login', 'post', null, form);
+    console.log('@@@@@@@ data:', data);
 
-      auth.login(data.token, data.userId, data.userName, data.filter);
+    auth.login(data.token, data.userId, data.userName);
 
     return setForm({
       ...form,
-      login: '',
+      name: '',
       password: '',
     });
   };
-
 
   return (
     <div className="registerHolder">
@@ -53,12 +55,30 @@ export default function LoginPage() {
         }}
       >
         <div className="pageHeader">sign in</div>
-        <input type="text" placeholder="login" name="login" value={form.login} className="inputForm" onChange={changeHandler} />
-        <input type="password" placeholder="password" name="password" value={form.password} className="inputForm" onChange={changeHandler} />
+        <input
+          type="text"
+          placeholder="login"
+          name="name"
+          value={form.name}
+          className="inputForm"
+          onChange={changeHandler}
+        />
+        <input
+          type="password"
+          placeholder="password"
+          name="password"
+          value={form.password}
+          className="inputForm"
+          onChange={changeHandler}
+        />
         <Link to="/register">
-          <button type="button" className="btn">registration</button>
+          <button type="button" className="btn">
+            registration
+          </button>
         </Link>
-        <button type="button" className="btn" id="btn1" onClick={loginHandler}>log in</button>
+        <button type="button" className="btn" id="btn1" onClick={loginHandler}>
+          log in
+        </button>
       </div>
       <div className="errorHolder">{backError || error}</div>
     </div>
