@@ -13,7 +13,8 @@ export default function TodoApp() {
   const [filtration, setFiltration] = useState('all');
   const [actives, setActives] = useState(null);
   const [chrono, setChrono] = useState(false);
-  const { userId } = useContext(AuthContext);
+  const [userId, setUserId] = useState(1);
+  // const { userId } = useContext(AuthContext);
 
   const counter = useCallback(
     (array) => {
@@ -24,7 +25,7 @@ export default function TodoApp() {
   );
 
   const fetchTasks = useCallback(async () => {
-    const fetched = await request(`/api/list/?ownerId=${1}`, 'get');
+    const fetched = await request(`/api/list/?ownerId=${userId}`, 'get');
     setTaskArray([...fetched]);
     return counter(fetched);
   }, [request]);
@@ -37,8 +38,14 @@ export default function TodoApp() {
     return setForm(event.target.value);
   };
 
-  const changeFilter = (filter) => {
-    return setFiltration(filter);
+  const changeFilter = async (filter) => {
+    const data = await request(
+      `api/list/?ownerId=${userId}&chrono=${chrono}&filter=${filter}`,
+      'get'
+    );
+    setFiltration(filter);
+
+    setTaskArray(data);
   };
 
   const setEveryOneStatus = async () => {
@@ -49,7 +56,7 @@ export default function TodoApp() {
       : (newStatus = false);
     oldTasks.map((item) => (item.done = newStatus));
     await request('/api/list', 'put', null, {
-      target: { ownerId: 1 },
+      target: { ownerId: userId },
       newValue: { done: newStatus },
     });
     setTaskArray(oldTasks);
@@ -68,11 +75,11 @@ export default function TodoApp() {
 
   const setChronology = async (chronoStatus) => {
     const data = await request(
-      `api/list/?ownerId=${1}&chrono=${chronoStatus}`,
+      `api/list/?ownerId=${userId}&chrono=${chronoStatus}&filter=${filtration}`,
       'get'
     );
     console.log('@@@@@@@ data:', data);
-    setChrono(chronoStatus)
+    setChrono(chronoStatus);
     setTaskArray([...data]);
   };
 
@@ -95,7 +102,7 @@ export default function TodoApp() {
     }
     const data = await request('api/list', 'post', null, {
       taskName: form,
-      ownerId: 1,
+      ownerId: userId,
     });
     const tasks = taskArray;
     tasks.push(data);
@@ -104,27 +111,25 @@ export default function TodoApp() {
     return setForm('');
   };
 
-  
-
-  const taskRender = () => {
-    let tasks = [];
-    if (filtration === 'all') {
-      tasks = taskArray;
-    } else if (filtration === 'active') {
-      tasks = taskArray.filter((x) => !x.done);
-    } else if (filtration === 'done') {
-      tasks = taskArray.filter((x) => x.done);
-    }
-    return tasks.map((item) => (
-      <Task
-        item={item}
-        key={item.id}
-        localItemRemover={localItemRemover}
-        toggleStatus={toggleStatus}
-        editTaskName={editTaskName}
-      />
-    ));
-  };
+  //const taskRender = () => {
+  //   let tasks = [];
+  //   if (filtration === 'all') {
+  //     tasks = taskArray;
+  //   } else if (filtration === 'active') {
+  //     tasks = taskArray.filter((x) => !x.done);
+  //   } else if (filtration === 'done') {
+  //     tasks = taskArray.filter((x) => x.done);
+  //   }
+  //   return taskArray.map((item) => (
+  //     <Task
+  //       item={item}
+  //       key={item.id}
+  //       localItemRemover={localItemRemover}
+  //       toggleStatus={toggleStatus}
+  //       editTaskName={editTaskName}
+  //     />
+  //   ));
+  // };
 
   return (
     <div>
@@ -151,7 +156,17 @@ export default function TodoApp() {
             />
           </div>
         </div>
-        <div className="section">{taskRender()}</div>
+        <div className="section">
+          {taskArray.map((item) => (
+            <Task
+              item={item}
+              key={item.id}
+              localItemRemover={localItemRemover}
+              toggleStatus={toggleStatus}
+              editTaskName={editTaskName}
+            />
+          ))}
+        </div>
         <Footer
           filter={filtration}
           active={actives}
