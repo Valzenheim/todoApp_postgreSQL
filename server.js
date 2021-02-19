@@ -19,6 +19,12 @@ app.use((err, req, res, next) => {
 
 app.use('/', express.static(__dirname + '/client/build/'));
 
+app.use((error, req, res, next) => {
+  res.status(error.status);
+  console.log('@@@@@@@ error:', error);
+  res.json({ message: error.message });
+});
+
 async function useControllers() {
   const paths = klawSync(`${__dirname}/routes`, { nodir: true });
   let controllersCount = 0;

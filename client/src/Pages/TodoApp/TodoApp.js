@@ -12,6 +12,7 @@ export default function TodoApp() {
   const [form, setForm] = useState('');
   const [filtration, setFiltration] = useState('all');
   const [actives, setActives] = useState(null);
+  const [chrono, setChrono] = useState(false);
   const { userId } = useContext(AuthContext);
 
   const counter = useCallback(
@@ -23,7 +24,7 @@ export default function TodoApp() {
   );
 
   const fetchTasks = useCallback(async () => {
-    const fetched = await request(`/api/list/?userId=${1}`, 'get');
+    const fetched = await request(`/api/list/?ownerId=${1}`, 'get');
     setTaskArray([...fetched]);
     return counter(fetched);
   }, [request]);
@@ -67,10 +68,12 @@ export default function TodoApp() {
 
   const setChronology = async (chronoStatus) => {
     const data = await request(
-      `api/list/?userId=${1}&&chrono=${chronoStatus}`,
+      `api/list/?ownerId=${1}&chrono=${chronoStatus}`,
       'get'
     );
-    return setTaskArray(data);
+    console.log('@@@@@@@ data:', data);
+    setChrono(chronoStatus)
+    setTaskArray([...data]);
   };
 
   const toggleStatus = (index, status) => {
@@ -100,6 +103,8 @@ export default function TodoApp() {
     counter(tasks);
     return setForm('');
   };
+
+  
 
   const taskRender = () => {
     let tasks = [];
