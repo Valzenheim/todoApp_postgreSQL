@@ -10,10 +10,12 @@ import { AuthContext } from './Context/AuthContext';
 import LoginPage from './Pages/LoginPage/LoginPage';
 import RegisterPage from './Pages/RegisterPage/RegisterPage';
 import TodoApp from './Pages/TodoApp/TodoApp';
+import pageRoute from './routes';
 
 function App() {
   const { token, userName, login, logout, userId } = useAuth();
-  const isAuthenticated = !!token;
+  const isAuth = !!token;
+  const routes = pageRoute(isAuth);
 
   return (
     <AuthContext.Provider
@@ -23,27 +25,12 @@ function App() {
         login,
         logout,
         userId,
-        isAuthenticated,
+        isAuth,
       }}
     >
       <Router>
-        <Switch>
-          <Route
-            exact
-            path="/"
-            render={() => {
-              if (!token) {
-                return <TodoApp />;
-              } else {
-                return <LoginPage />;
-              }
-            }}
-          />
-
-          <Route path="/register" component={RegisterPage} />
-
-          <Redirect to="/" />
-        </Switch>
+        {isAuth}
+        {routes}
       </Router>
     </AuthContext.Provider>
   );
