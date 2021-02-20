@@ -1,17 +1,19 @@
 const { Router } = require('express');
 const jwt = require('jsonwebtoken');
 const { check, validationResult } = require('express-validator');
+const { User } = require('../../models/user');
 const router = Router();
 
-router.get(
-  'user',
+router.post(
+  '/login',
   [
-    check('login', 'Wrong login. Please, try again.').isLength({ min: 3 }),
+    check('name', 'Wrong login. Please, try again.').isLength({ min: 3 }),
     check('password', 'Wrong password. Please try again.').isLength({ min: 6 }),
   ],
   async (req, res) => {
     try {
       const errors = validationResult(req);
+      const userData = req.body;
 
       if (!errors.isEmpty()) {
         res.status(400).json({
@@ -19,7 +21,7 @@ router.get(
         });
       }
 
-      let user = await User.findOne({ Login: req.body.login });
+      let user = await User.findOne({ where: { name: userData.name } });
 
       if (!user) {
         return res
@@ -27,21 +29,20 @@ router.get(
           .json({ message: 'Wrong user login. Please try again.' });
       }
 
-      if (req.body.password !== user.Password) {
+      if (userData.password !== user.password) {
         return res
           .status(400)
           .json({ message: 'Wrong password. Please try again.' });
       }
 
-      const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
+      const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, {
         expiresIn: '1h',
       });
 
       res.status(200).json({
         token,
-        userId: user._id,
-        userName: user.Login,
-        filter: user.filter,
+        userId: user.id,
+        userName: user.name,
       });
     } catch (e) {
       res.status(500).json({ message: e.message });

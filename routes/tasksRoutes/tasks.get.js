@@ -4,12 +4,9 @@ const { Task } = require('../../models/task');
 
 router.get('/list/', async (req, res) => {
   try {
-    console.log('@@@@@@@ query:', req.query.filter);
-    console.log(req.query);
     const userId = req.query.ownerId;
     const chrono = req.query.chrono;
     const filter = req.query.filter;
-    console.log(userId);
 
     let searchParams = {
       ownerId: userId,
@@ -18,9 +15,6 @@ router.get('/list/', async (req, res) => {
     filter !== undefined && filter !== 'all'
       ? (searchParams.done = filter === 'done' ? true : false)
       : searchParams;
-
-    console.log('@@@@@@@ chrono:', chrono);
-    console.log('@@@@@@@ searchParams:', searchParams);
 
     const tasks = await Task.findAll({
       where: searchParams,

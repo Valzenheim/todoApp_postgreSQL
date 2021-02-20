@@ -13,8 +13,7 @@ export default function TodoApp() {
   const [filtration, setFiltration] = useState('all');
   const [actives, setActives] = useState(null);
   const [chrono, setChrono] = useState(false);
-  const [userId, setUserId] = useState(1);
-  // const { userId } = useContext(AuthContext);
+  const auth = useContext(AuthContext);
 
   const counter = useCallback(
     (array) => {
@@ -25,7 +24,7 @@ export default function TodoApp() {
   );
 
   const fetchTasks = useCallback(async () => {
-    const fetched = await request(`/api/list/?ownerId=${userId}`, 'get');
+    const fetched = await request(`/api/list/?ownerId=${auth.userId}`, 'get');
     setTaskArray([...fetched]);
     return counter(fetched);
   }, [request]);
@@ -40,7 +39,7 @@ export default function TodoApp() {
 
   const changeFilter = async (filter) => {
     const data = await request(
-      `api/list/?ownerId=${userId}&chrono=${chrono}&filter=${filter}`,
+      `api/list/?ownerId=${auth.userId}&chrono=${chrono}&filter=${filter}`,
       'get'
     );
     setFiltration(filter);
@@ -56,7 +55,7 @@ export default function TodoApp() {
       : (newStatus = false);
     oldTasks.map((item) => (item.done = newStatus));
     await request('/api/list', 'put', null, {
-      target: { ownerId: userId },
+      target: { ownerId: auth.userId },
       newValue: { done: newStatus },
     });
     setTaskArray(oldTasks);
@@ -75,10 +74,9 @@ export default function TodoApp() {
 
   const setChronology = async (chronoStatus) => {
     const data = await request(
-      `api/list/?ownerId=${userId}&chrono=${chronoStatus}&filter=${filtration}`,
+      `api/list/?ownerId=${auth.userId}&chrono=${chronoStatus}&filter=${filtration}`,
       'get'
     );
-    console.log('@@@@@@@ data:', data);
     setChrono(chronoStatus);
     setTaskArray([...data]);
   };
@@ -102,7 +100,7 @@ export default function TodoApp() {
     }
     const data = await request('api/list', 'post', null, {
       taskName: form,
-      ownerId: userId,
+      ownerId: auth.userId,
     });
     const tasks = taskArray;
     tasks.push(data);

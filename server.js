@@ -12,17 +12,16 @@ const app = express();
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-app.use((err, req, res, next) => {
-  if (err) console.log(err.message);
-  next();
-});
-
-app.use('/', express.static(__dirname + '/client/build/'));
-
 app.use((error, req, res, next) => {
   res.status(error.status);
   console.log('@@@@@@@ error:', error);
   res.json({ message: error.message });
+});
+
+app.use(express.static(path.join(__dirname, 'client/build')));
+app.get('/api/test', (req, res, next) => {
+  res.json({ aaa: 'bbb' });
+  next();
 });
 
 async function useControllers() {
@@ -50,5 +49,11 @@ const start = async () => {
     console.log('@@@@@@@ error:', e.message);
   }
 };
+
 useControllers();
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname + '/client/build/index.html'));
+});
+
 start();
