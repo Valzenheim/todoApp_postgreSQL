@@ -30,11 +30,18 @@ export default function Task({
     return await request(`api/list/?id=${item.id}`, 'delete');
   };
 
-  const eventAddition = () => {};
+  const eventAddition = () => {
+    document.addEventListener('click', formStatusChanger());
+  };
+
+  const formStatusChanger = () => {
+    return setFormStatus(!formStatus);
+  };
 
   const setNewTaskValue = () => {
     editTaskName(item.id, formValue);
-    return setFormStatus(!formStatus);
+    document.removeEventListener('click', formStatusChanger());
+    formStatusChanger();
   };
 
   return (
@@ -51,7 +58,7 @@ export default function Task({
       <div
         className="textArea"
         onDoubleClick={() => {
-          setFormStatus(!formStatus);
+          formStatusChanger();
           eventAddition();
         }}
       >
