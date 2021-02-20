@@ -27,7 +27,6 @@ export const useHttp = () => {
 
         return resp.data;
       } catch (e) {
-        console.log('@@@@@@@ error:', e.response);
         setBackError(
           e.response.data.message || 'Something went wrong. Please try again'
         );

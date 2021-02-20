@@ -9,7 +9,6 @@ router.post('/list', auth, async (req, res) => {
     const userId = req.user;
 
     taskData.ownerId = userId;
-    console.log('@@@@@@@ taskData:', taskData);
 
     if (!taskData.taskName || !taskData.ownerId) {
       throw new Error('wrong task data');
