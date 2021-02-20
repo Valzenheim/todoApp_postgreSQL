@@ -28,7 +28,6 @@ export default function LoginPage() {
     }
 
     const data = await request('/api/login', 'post', null, form);
-    console.log('@@@@@@@ data:', data);
 
     auth.login(data.token, data.userId, data.userName);
 

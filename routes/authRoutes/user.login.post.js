@@ -14,7 +14,6 @@ router.post(
     try {
       const errors = validationResult(req);
       const userData = req.body;
-      console.log('@@@@@@@ userData:', userData.password);
 
       if (!errors.isEmpty()) {
         res.status(400).json({
@@ -23,7 +22,6 @@ router.post(
       }
 
       let user = await User.findOne({ where: { name: userData.name } });
-      console.log('@@@@@@@ user:', user);
 
       if (!user) {
         return res

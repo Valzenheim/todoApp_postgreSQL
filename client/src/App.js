@@ -9,8 +9,6 @@ function App() {
   const isAuth = !!token;
   const routes = pageRoute(isAuth);
 
-  console.log('@@@@@@@ userIdApp:', userId);
-
   return (
     <AuthContext.Provider
       value={{

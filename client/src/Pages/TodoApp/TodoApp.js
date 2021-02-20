@@ -24,8 +24,6 @@ export default function TodoApp() {
   );
 
   const fetchTasks = useCallback(async () => {
-    console.log('@@@@@@@ auth:', auth);
-    console.log('@@@@@@@ userId:', auth.userId);
     const fetched = await request(`/api/list/?ownerId=${auth.userId}`, 'get');
     setTaskArray([...fetched]);
     return counter(fetched);

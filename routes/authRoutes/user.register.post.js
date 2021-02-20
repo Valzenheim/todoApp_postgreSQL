@@ -18,7 +18,6 @@ router.post(
     try {
       const errors = validationResult(req);
       const userData = req.body;
-      console.log('@@@@@@@ userData:', userData);
 
       if (!errors.isEmpty()) {
         res.status(400).json({
