@@ -8,7 +8,7 @@ export const pageRoute = (isAuth) => {
   if (isAuth) {
     return (
       <Switch>
-        <Route path="/todoApp" exact>
+        <Route path="/todoApp">
           <TodoApp />
         </Route>
         <Redirect to="/todoApp" />

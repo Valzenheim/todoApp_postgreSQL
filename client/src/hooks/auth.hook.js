@@ -8,8 +8,8 @@ export const useAuth = () => {
   const [userName, setUserName] = useState(null);
 
   const login = useCallback((jwtToken, id, userLogin) => {
-    setToken(jwtToken);
     setUserId(id);
+    setToken(jwtToken);
     setUserName(userLogin);
 
     console.log('@@@@@@@ id:', id);
@@ -38,6 +38,8 @@ export const useAuth = () => {
       login(data.token, data.userId, data.name);
     }
   }, [login]);
+
+  console.log('@@@@@@@ hook:', userName, token, userId);
 
   return {
     userName,
