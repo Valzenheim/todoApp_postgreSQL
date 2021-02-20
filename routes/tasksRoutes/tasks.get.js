@@ -1,10 +1,11 @@
 const Router = require('express');
 const router = new Router();
 const { Task } = require('../../models/task');
+const auth = require('../../middleware/auth.middleware');
 
-router.get('/list/', async (req, res) => {
+router.get('/list/', auth, async (req, res) => {
   try {
-    const userId = req.query.ownerId;
+    const userId = req.local.userId;
     const chrono = req.query.chrono;
     const filter = req.query.filter;
 

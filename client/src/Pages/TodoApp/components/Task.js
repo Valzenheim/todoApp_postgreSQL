@@ -15,7 +15,7 @@ export default function Task({
 
   const statusChanger = async () => {
     toggleStatus(item.id, !item.done);
-    return await request('api/list', 'put', null, {
+    await request('api/list', 'put', null, {
       target: { id: item.id },
       newValue: { done: item.done },
     });
@@ -27,25 +27,21 @@ export default function Task({
 
   const itemRemover = async () => {
     localItemRemover(item.id);
-    return await request(`api/list/?id=${item.id}`, 'delete');
-  };
-
-  const eventAddition = () => {
-    document.addEventListener('click', formStatusChanger());
-  };
-
-  const formStatusChanger = () => {
-    return setFormStatus(!formStatus);
+    await request(`api/list/?id=${item.id}`, 'delete');
   };
 
   const setNewTaskValue = () => {
     editTaskName(item.id, formValue);
-    document.removeEventListener('click', formStatusChanger());
-    formStatusChanger();
+    setFormStatus(!formStatus);
   };
 
   return (
-    <div className={item.done ? 'completed' : 'active'}>
+    <div
+      className={item.done ? 'completed' : 'active'}
+      onDoubleClick={() => {
+        setFormStatus(true);
+      }}
+    >
       <div
         className="checkContainer"
         id={item.id}
@@ -55,20 +51,18 @@ export default function Task({
       >
         <img className="markIcon" src={check} alt={check} />
       </div>
-      <div
-        className="textArea"
-        onDoubleClick={() => {
-          formStatusChanger();
-          eventAddition();
-        }}
-      >
+      <div className="textArea">
         {formStatus ? (
           <input
+            onBlur={() => {
+              setFormStatus(false);
+            }}
             className="editTaskInput"
             onChange={setEditValue}
             value={formValue}
             autoFocus={true}
             onKeyPress={(event) => {
+              console.log('@@@@@@@ formStatus:', formStatus);
               if (event.key === 'Enter') {
                 setNewTaskValue();
               }
