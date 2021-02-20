@@ -1,10 +1,15 @@
 const Router = require('express');
 const router = new Router();
 const { Task } = require('../../models/task');
+const auth = require('../../middleware/auth.middleware');
 
-router.post('/list', async (req, res) => {
+router.post('/list', auth, async (req, res) => {
   try {
     const taskData = req.body;
+    const userId = req.user;
+
+    taskData.ownerId = userId;
+    console.log('@@@@@@@ taskData:', taskData);
 
     if (!taskData.taskName || !taskData.ownerId) {
       throw new Error('wrong task data');

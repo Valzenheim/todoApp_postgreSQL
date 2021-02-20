@@ -27,7 +27,7 @@ export default function LoginPage() {
       return setError('Wrong user data. Please try again');
     }
 
-    const data = await request('/api/login', 'post', null, form);
+    const data = await request('/api/login', 'post', form);
 
     auth.login(data.token, data.userId, data.userName);
 

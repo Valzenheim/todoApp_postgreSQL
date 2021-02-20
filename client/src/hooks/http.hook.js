@@ -7,13 +7,7 @@ export const useHttp = () => {
   const [backError, setBackError] = useState(null);
 
   const request = useCallback(
-    async (
-      resUrl,
-      resMethod = 'GET',
-      resParams,
-      body = null,
-      resHeaders = {}
-    ) => {
+    async (resUrl, resMethod = 'GET', body = null, resHeaders = {}) => {
       try {
         if (body) {
           body = JSON.stringify(body);
@@ -24,23 +18,19 @@ export const useHttp = () => {
           resHeaders.Authorization = `Bearer ${token}`;
         }
 
-        const response = await axios({
+        const resp = await axios({
           method: resMethod,
           url: resUrl,
           data: body,
           headers: resHeaders,
-          params: resParams,
         });
 
-        if (response.status !== 200) {
-          throw new Error(
-            response.message || 'Something went wrong. Please try again'
-          );
-        }
-
-        return response.data;
+        return resp.data;
       } catch (e) {
-        setBackError(e.message);
+        console.log('@@@@@@@ error:', e.response);
+        setBackError(
+          e.response.data.message || 'Something went wrong. Please try again'
+        );
         throw e;
       }
     },

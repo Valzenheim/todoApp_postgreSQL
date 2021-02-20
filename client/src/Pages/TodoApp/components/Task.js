@@ -15,7 +15,7 @@ export default function Task({
 
   const statusChanger = async () => {
     toggleStatus(item.id, !item.done);
-    await request('api/list', 'put', null, {
+    await request('api/list', 'put', {
       target: { id: item.id },
       newValue: { done: item.done },
     });
@@ -62,7 +62,6 @@ export default function Task({
             value={formValue}
             autoFocus={true}
             onKeyPress={(event) => {
-              console.log('@@@@@@@ formStatus:', formStatus);
               if (event.key === 'Enter') {
                 setNewTaskValue();
               }

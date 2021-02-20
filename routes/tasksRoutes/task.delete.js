@@ -1,8 +1,9 @@
 const Router = require('express');
 const router = new Router();
 const { Task } = require('../../models/task');
+const auth = require('../../middleware/auth.middleware');
 
-router.delete('/list', async (req, res) => {
+router.delete('/list', auth, async (req, res) => {
   try {
     if (!req.query) {
       throw new Error('wrong parameters');

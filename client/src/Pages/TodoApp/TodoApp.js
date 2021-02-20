@@ -54,7 +54,7 @@ export default function TodoApp() {
       ? (newStatus = true)
       : (newStatus = false);
     oldTasks.map((item) => (item.done = newStatus));
-    await request('/api/list', 'put', null, {
+    await request('/api/list', 'put', {
       target: { ownerId: auth.userId },
       newValue: { done: newStatus },
     });
@@ -66,7 +66,7 @@ export default function TodoApp() {
     const tasks = taskArray.map((item) =>
       item.id === target ? (item.taskName = value) : null
     );
-    await request('api/list', 'put', null, {
+    await request('api/list', 'put', {
       target: { id: target },
       newValue: { taskName: value },
     });
@@ -98,9 +98,8 @@ export default function TodoApp() {
     if (!/[0-9a-zA-Zа-яёА-ЯЁ]/i.test(form)) {
       return null;
     }
-    const data = await request('api/list', 'post', null, {
+    const data = await request('api/list', 'post', {
       taskName: form,
-      ownerId: auth.userId,
     });
     const tasks = taskArray;
     tasks.push(data);

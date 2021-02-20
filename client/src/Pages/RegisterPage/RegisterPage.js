@@ -47,7 +47,7 @@ export default function RegisterPage() {
       password: form.password,
     };
 
-    const data = await request('api/register', 'post', null, userData);
+    const data = await request('api/register', 'post', userData);
 
     return auth.login(data.token, data.userId, data.userName);
   };
