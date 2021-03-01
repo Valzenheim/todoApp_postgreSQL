@@ -7,10 +7,10 @@ const router = new Router();
 router.post(
   '/register',
   [
-    check('name', 'Login must be longer, than 3 characters').isLength({
+    check('name', 'Login must be longer, than 2 characters').isLength({
       min: 3,
     }),
-    check('password', 'password must be longer than 6 characters').isLength({
+    check('password', 'password must be longer than 5 characters').isLength({
       min: 6,
     }),
   ],
