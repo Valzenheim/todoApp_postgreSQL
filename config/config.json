@@ -19,9 +19,11 @@
     "database": "database_production",
     "host": "127.0.0.1",
     "dialect": "mysql",
-    "ssl": {
-      "require": true,
-      "rejectUnauthorized": false
+    "dialectOptions": {
+      "ssl": {
+        "require": true,
+        "rejectUnauthorized": false
+      }
     }
   }
 }
