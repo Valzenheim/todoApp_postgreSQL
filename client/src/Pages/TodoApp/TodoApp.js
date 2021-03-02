@@ -40,20 +40,6 @@ export default function TodoApp() {
     setTaskArray(data);
   };
 
-  const setEveryOneStatus = async () => {
-    const oldTasks = [...taskArray];
-    let newStatus = Boolean;
-    oldTasks.filter((x) => !x.done).length > 0
-      ? (newStatus = true)
-      : (newStatus = false);
-    oldTasks.map((item) => (item.done = newStatus));
-    await request('/api/list', 'put', {
-      target: { ownerId: auth.userId },
-      newValue: { done: newStatus },
-    });
-    setTaskArray(oldTasks);
-  };
-
   const editTaskName = async (target, value) => {
     const tasks = taskArray.map((item) =>
       item.id === target ? (item.taskName = value) : null
@@ -148,7 +134,7 @@ export default function TodoApp() {
             className={chrono ? 'chronology_true' : 'chronology_false'}
             onClick={() => {
               setChrono(!chrono);
-              setChronology(chrono);
+              setChronology();
             }}
           >
             <img className="upIcon" src={up} alt={up} />
