@@ -70,6 +70,7 @@
 }
 
 .App .remSpan {
+  display: block;
   float: right;
   height: 20px;
   width: 20px;
@@ -129,13 +130,12 @@
 }
 
 .checkContainer {
-  display: inline-block;
+  display: block;
   height: 25px;
   width: 25px;
   border: 1px solid gray;
   border-radius: 100%;
   margin: auto auto auto 10px;
-  vertical-align: middle;
   cursor: pointer;
 }
 
