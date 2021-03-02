@@ -156,14 +156,18 @@ export default function TodoApp() {
           </div>
         </div>
         <div className="footer">
-          <span
-            className="selectAll"
+          <div
             role="button"
             aria-hidden="true"
-            onClick={setEveryOneStatus}
+            className={chrono ? 'chronology_true' : 'chronology_false'}
+            onClick={() => {
+              setChrono(!chrono);
+              setChronology(chrono);
+            }}
           >
-            {actives} tasks left
-          </span>
+            <img className="upIcon" src={up} alt={up} />
+            <img className="downIcon" src={down} alt={down} />
+          </div>
           <button
             type="button"
             className={filter === 'all' ? 'activeBtn' : 'sleepBtn'}
@@ -188,18 +192,15 @@ export default function TodoApp() {
           >
             done
           </button>
-          <div
+
+          <span
+            className="selectAll"
             role="button"
             aria-hidden="true"
-            className={chrono ? 'chronology_true' : 'chronology_false'}
-            onClick={() => {
-              setChrono(!chrono);
-              setChronology(chrono);
-            }}
+            onClick={setEveryOneStatus}
           >
-            <img className="upIcon" src={up} alt={up} />
-            <img className="downIcon" src={down} alt={down} />
-          </div>
+            {actives} tasks left
+          </span>
         </div>
         <div className="section">{taskRender()}</div>
         {/* <Footer
