@@ -36,12 +36,7 @@ export default function Task({
   };
 
   return (
-    <div
-      className={item.done ? 'completed' : 'active'}
-      onDoubleClick={() => {
-        setFormStatus(true);
-      }}
-    >
+    <div className={item.done ? 'completed' : 'active'}>
       <div
         className="checkContainer"
         id={item.id}
@@ -51,11 +46,17 @@ export default function Task({
       >
         <img className="markIcon" src={check} alt={check} />
       </div>
-      <div className="textArea">
+      <div
+        className="textArea"
+        onDoubleClick={() => {
+          setFormStatus(true);
+        }}
+      >
         {formStatus ? (
           <input
             onBlur={() => {
               setFormStatus(false);
+              setFormValue(item.taskName);
             }}
             className="editTaskInput"
             onChange={setEditValue}

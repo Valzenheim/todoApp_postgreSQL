@@ -36,6 +36,7 @@
   color: rgb(117, 0, 117);
   border-bottom: 1px solid black;
   background-color: #dcdcdc;
+  text-align: center;
 }
 
 .todoHeader {
