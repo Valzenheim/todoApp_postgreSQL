@@ -79,7 +79,7 @@
 }
 
 .filterButtons {
-  margin: auto;
+  margin: auto 20px auto auto;
 }
 
 .activeBtn {
@@ -87,6 +87,7 @@
   border-radius: 5px;
   background-color: lightgray;
   outline: none;
+  margin: auto 10px auto 10px;
 }
 
 .sleepBtn {
@@ -94,6 +95,7 @@
   border-radius: 5px;
   background-color: #dcdcdc;
   outline: none;
+  margin: auto 10px auto 10px;
 }
 
 .sleepBtn:hover {

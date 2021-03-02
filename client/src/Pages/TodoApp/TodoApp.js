@@ -19,8 +19,7 @@ export default function TodoApp() {
 
   const fetchTasks = useCallback(async () => {
     const fetched = await request(`/api/list/`, 'get');
-    setTaskArray([...fetched]);
-    return counter(fetched);
+    return setTaskArray([...fetched]);
   }, [request]);
 
   useEffect(() => {
