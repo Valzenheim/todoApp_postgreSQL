@@ -9,12 +9,10 @@ import down from '../../images/view_sort_descending_icon_181226.svg';
 
 export default function TodoApp() {
   const { request } = useHttp();
-  const [taskArray, setTaskArray] = useState([
-    { taskName: '12321', done: true },
-  ]);
+  const [taskArray, setTaskArray] = useState([]);
   const [form, setForm] = useState('');
   const [filter, setFilter] = useState('all');
-  const [chrono, setChrono] = useState(false);
+  const [chrono, setChrono] = useState(true);
   const auth = useContext(AuthContext);
 
   const fetchTasks = useCallback(async () => {
@@ -51,10 +49,12 @@ export default function TodoApp() {
   };
 
   const setChronology = async () => {
+    let newChrono = !chrono;
     const data = await request(
-      `api/list/?chrono=${chrono}&filter=${filter}`,
+      `api/list/?chrono=${newChrono}&filter=${filter}`,
       'get'
     );
+    setChrono(newChrono);
     setTaskArray([...data]);
   };
 
@@ -133,7 +133,6 @@ export default function TodoApp() {
             aria-hidden="true"
             className={chrono ? 'chronology_true' : 'chronology_false'}
             onClick={() => {
-              setChrono(!chrono);
               setChronology();
             }}
           >
