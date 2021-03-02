@@ -8,7 +8,7 @@ import { AuthContext } from '../../Context/AuthContext';
 
 export default function TodoApp() {
   const { request } = useHttp();
-  const [taskArray, setTaskArray] = useState(['1', '2', '3']);
+  const [taskArray, setTaskArray] = useState([]);
   const [form, setForm] = useState('');
   const [filtration, setFiltration] = useState('all');
   const [actives, setActives] = useState(null);
