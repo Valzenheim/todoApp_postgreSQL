@@ -1,16 +1,19 @@
 import React, { useState, useCallback, useContext, useEffect } from 'react';
 import Task from './components/Task';
-import { Footer } from './components/Footer';
 import Header from './components/Header';
 import './styles/style.css';
 import { useHttp } from '../../hooks/http.hook';
 import { AuthContext } from '../../Context/AuthContext';
+import up from '../../images/view_sort_ascending_icon_181225 (1).svg';
+import down from '../../images/view_sort_descending_icon_181226.svg';
 
 export default function TodoApp() {
   const { request } = useHttp();
-  const [taskArray, setTaskArray] = useState([]);
+  const [taskArray, setTaskArray] = useState([
+    { taskName: '12321', done: true },
+  ]);
   const [form, setForm] = useState('');
-  const [filtration, setFiltration] = useState('all');
+  const [filter, setFilter] = useState('all');
   const [actives, setActives] = useState(null);
   const [chrono, setChrono] = useState(false);
   const auth = useContext(AuthContext);
@@ -24,7 +27,7 @@ export default function TodoApp() {
   );
 
   const fetchTasks = useCallback(async () => {
-    const fetched = await request(`/api/list/?ownerId=${auth.userId}`, 'get');
+    const fetched = await request(`/api/list/`, 'get');
     setTaskArray([...fetched]);
     return counter(fetched);
   }, [request]);
@@ -37,13 +40,13 @@ export default function TodoApp() {
     return setForm(event.target.value);
   };
 
-  const changeFilter = async (filter) => {
+  const changeFilter = async (event) => {
+    const newFilter = event.target.name;
     const data = await request(
-      `api/list/?ownerId=${auth.userId}&chrono=${chrono}&filter=${filter}`,
+      `api/list/?chrono=${chrono}&filter=${newFilter}`,
       'get'
     );
-    setFiltration(filter);
-
+    setFilter(newFilter);
     setTaskArray(data);
   };
 
@@ -72,12 +75,11 @@ export default function TodoApp() {
     });
   };
 
-  const setChronology = async (chronoStatus) => {
+  const setChronology = async () => {
     const data = await request(
-      `api/list/?ownerId=${auth.userId}&chrono=${chronoStatus}&filter=${filtration}`,
+      `api/list/?chrono=${chrono}&filter=${filter}`,
       'get'
     );
-    setChrono(chronoStatus);
     setTaskArray([...data]);
   };
 
@@ -108,25 +110,25 @@ export default function TodoApp() {
     return setForm('');
   };
 
-  //const taskRender = () => {
-  //   let tasks = [];
-  //   if (filtration === 'all') {
-  //     tasks = taskArray;
-  //   } else if (filtration === 'active') {
-  //     tasks = taskArray.filter((x) => !x.done);
-  //   } else if (filtration === 'done') {
-  //     tasks = taskArray.filter((x) => x.done);
-  //   }
-  //   return taskArray.map((item) => (
-  //     <Task
-  //       item={item}
-  //       key={item.id}
-  //       localItemRemover={localItemRemover}
-  //       toggleStatus={toggleStatus}
-  //       editTaskName={editTaskName}
-  //     />
-  //   ));
-  // };
+  const taskRender = () => {
+    let tasks = [];
+    if (filter === 'all') {
+      tasks = taskArray;
+    } else if (filter === 'active') {
+      tasks = taskArray.filter((x) => !x.done);
+    } else if (filter === 'done') {
+      tasks = taskArray.filter((x) => x.done);
+    }
+    return tasks.map((item) => (
+      <Task
+        item={item}
+        key={item.id}
+        localItemRemover={localItemRemover}
+        toggleStatus={toggleStatus}
+        editTaskName={editTaskName}
+      />
+    ));
+  };
 
   return (
     <div>
@@ -153,24 +155,60 @@ export default function TodoApp() {
             />
           </div>
         </div>
-        <div className="section">
-          {taskArray.map((item) => (
-            <Task
-              item={item}
-              key={item.id}
-              localItemRemover={localItemRemover}
-              toggleStatus={toggleStatus}
-              editTaskName={editTaskName}
-            />
-          ))}
+        <div className="footer">
+          <span
+            className="selectAll"
+            role="button"
+            aria-hidden="true"
+            onClick={setEveryOneStatus}
+          >
+            {actives} tasks left
+          </span>
+          <button
+            type="button"
+            className={filter === 'all' ? 'activeBtn' : 'sleepBtn'}
+            name="all"
+            onClick={changeFilter}
+          >
+            all
+          </button>
+          <button
+            type="button"
+            className={filter === 'active' ? 'activeBtn' : 'sleepBtn'}
+            name="active"
+            onClick={changeFilter}
+          >
+            active
+          </button>
+          <button
+            type="button"
+            className={filter === 'done' ? 'activeBtn' : 'sleepBtn'}
+            name="done"
+            onClick={changeFilter}
+          >
+            done
+          </button>
+          <div
+            role="button"
+            aria-hidden="true"
+            className={chrono ? 'chronology_true' : 'chronology_false'}
+            onClick={() => {
+              setChrono(!chrono);
+              setChronology(chrono);
+            }}
+          >
+            <img className="upIcon" src={up} alt={up} />
+            <img className="downIcon" src={down} alt={down} />
+          </div>
         </div>
-        <Footer
-          filter={filtration}
+        <div className="section">{taskRender()}</div>
+        {/* <Footer
+          filter={filter}
           active={actives}
           setFilter={changeFilter}
           changeAll={setEveryOneStatus}
           setChronology={setChronology}
-        />
+        /> */}
       </div>
     </div>
   );
