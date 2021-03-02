@@ -142,27 +142,6 @@
   text-align: center;
 }
 
-.selectAll {
-  width: 120px;
-  float: right;
-  margin: auto 10px auto 0;
-  cursor: pointer;
-  padding: 5px;
-  font-size: 20px;
-}
-
-.selectAll:hover {
-  padding: 4px;
-  border: 1px solid #a9a9a9;
-  border-radius: 5px;
-  outline: none;
-}
-
-.selectAll:active {
-  border: 1px solid red;
-  background-color: lightgray;
-}
-
 .logoutBtn {
   text-align: right;
   margin: 5px 0 auto auto;

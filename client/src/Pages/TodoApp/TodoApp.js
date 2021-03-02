@@ -14,17 +14,8 @@ export default function TodoApp() {
   ]);
   const [form, setForm] = useState('');
   const [filter, setFilter] = useState('all');
-  const [actives, setActives] = useState(null);
   const [chrono, setChrono] = useState(false);
   const auth = useContext(AuthContext);
-
-  const counter = useCallback(
-    (array) => {
-      const activeCount = array.filter((item) => !item.done).length;
-      return setActives(activeCount);
-    },
-    [taskArray]
-  );
 
   const fetchTasks = useCallback(async () => {
     const fetched = await request(`/api/list/`, 'get');
@@ -62,7 +53,6 @@ export default function TodoApp() {
       newValue: { done: newStatus },
     });
     setTaskArray(oldTasks);
-    counter(oldTasks);
   };
 
   const editTaskName = async (target, value) => {
@@ -86,14 +76,12 @@ export default function TodoApp() {
   const toggleStatus = (index, status) => {
     const tasks = [...taskArray];
     tasks[taskArray.findIndex((el) => el.id === index)].done = status;
-    counter(tasks);
     return setTaskArray([...tasks]);
   };
 
   const localItemRemover = async (item) => {
     const tasks = taskArray.filter((x) => x.id !== item);
     setTaskArray(tasks);
-    counter(tasks);
   };
 
   const addingNewTask = async () => {
@@ -106,7 +94,6 @@ export default function TodoApp() {
     const tasks = taskArray;
     tasks.push(data);
     setTaskArray(tasks);
-    counter(tasks);
     return setForm('');
   };
 
@@ -194,14 +181,6 @@ export default function TodoApp() {
               done
             </button>
           </div>
-          <span
-            className="selectAll"
-            role="button"
-            aria-hidden="true"
-            onClick={setEveryOneStatus}
-          >
-            {actives} tasks left
-          </span>
         </div>
         <div className="section">{taskRender()}</div>
         {/* <Footer
