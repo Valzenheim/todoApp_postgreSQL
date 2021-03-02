@@ -70,7 +70,6 @@
 }
 
 .App .remSpan {
-  display: block;
   float: right;
   height: 20px;
   width: 20px;
@@ -79,24 +78,8 @@
   cursor: pointer;
 }
 
-.removeAll {
-  border: none;
-  border-radius: 5px;
-  background-color: #dcdcdc;
-  margin: 5px 5px auto 5px;
-  outline: none;
-  font-size: 20px;
-  width: 190px;
-  padding: 5px;
-}
-.removeAll:hover {
-  border: 1px solid #a9a9a9;
-  border-radius: 5px;
-}
-
-.removeAll:active {
-  border: 1px solid red;
-  background-color: lightgray;
+.filterButtons {
+  margin: auto;
 }
 
 .activeBtn {
@@ -154,13 +137,15 @@
 
 .footer {
   height: 50px;
+  display: flex;
+  align-items: center;
+  text-align: center;
 }
 
 .selectAll {
-  width: 115px;
-  text-align: center;
-  display: inline-block;
-  margin: 15px 20px auto 10px;
+  width: 120px;
+  float: right;
+  margin: auto 10px auto 0;
   cursor: pointer;
   padding: 5px;
   font-size: 20px;
@@ -199,7 +184,7 @@
   border: 1px solid orange;
   border-radius: 5px;
   background-color: #dcdcdc;
-  margin: 0 auto -10px 70px;
+  margin: auto 10px 10px;
   outline: none;
   font-size: 20px;
   padding: 5px;

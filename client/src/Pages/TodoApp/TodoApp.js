@@ -168,31 +168,32 @@ export default function TodoApp() {
             <img className="upIcon" src={up} alt={up} />
             <img className="downIcon" src={down} alt={down} />
           </div>
-          <button
-            type="button"
-            className={filter === 'all' ? 'activeBtn' : 'sleepBtn'}
-            name="all"
-            onClick={changeFilter}
-          >
-            all
-          </button>
-          <button
-            type="button"
-            className={filter === 'active' ? 'activeBtn' : 'sleepBtn'}
-            name="active"
-            onClick={changeFilter}
-          >
-            active
-          </button>
-          <button
-            type="button"
-            className={filter === 'done' ? 'activeBtn' : 'sleepBtn'}
-            name="done"
-            onClick={changeFilter}
-          >
-            done
-          </button>
-
+          <div className="filterButtons">
+            <button
+              type="button"
+              className={filter === 'all' ? 'activeBtn' : 'sleepBtn'}
+              name="all"
+              onClick={changeFilter}
+            >
+              all
+            </button>
+            <button
+              type="button"
+              className={filter === 'active' ? 'activeBtn' : 'sleepBtn'}
+              name="active"
+              onClick={changeFilter}
+            >
+              active
+            </button>
+            <button
+              type="button"
+              className={filter === 'done' ? 'activeBtn' : 'sleepBtn'}
+              name="done"
+              onClick={changeFilter}
+            >
+              done
+            </button>
+          </div>
           <span
             className="selectAll"
             role="button"
