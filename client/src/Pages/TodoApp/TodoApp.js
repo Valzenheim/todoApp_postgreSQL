@@ -87,6 +87,16 @@ export default function TodoApp() {
     return setForm('');
   };
 
+  const setCountOfItems = async (event) => {
+    const count = event.target.value;
+    const data = await request(
+      `api/list/?chrono=${newChrono}&filter=${filter}&count=${count}&page=${currentPage}`,
+      'get'
+    );
+    setTaskArray(data.rows);
+    setTasksLimit(count);
+  };
+
   const taskRender = () => {
     let tasks = [];
     if (filter === 'all') {
@@ -144,8 +154,9 @@ export default function TodoApp() {
             <img className="upIcon" src={up} alt={up} />
             <img className="downIcon" src={down} alt={down} />
           </div>
-          <select>
-            <option />
+          <select value={tasksLimit} onChange={setCountOfItems}>
+            <option value="2">2</option>
+            <option value="5">5</option>
           </select>
           <div className="filterButtons">
             <button
