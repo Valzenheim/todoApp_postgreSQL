@@ -15,6 +15,7 @@ export default function TodoApp() {
   const [chrono, setChrono] = useState(true);
   const [tasksLimit, setTasksLimit] = useState(2);
   const [currentPage, setCurrentPage] = useState(1);
+  const [taskCount, setTaskCount] = useState(0);
   const auth = useContext(AuthContext);
 
   const fetchTasks = useCallback(async () => {
@@ -22,7 +23,8 @@ export default function TodoApp() {
       `/api/list/?count=${tasksLimit}&page=${currentPage}`,
       'get'
     );
-    return setTaskArray([...fetched.rows]);
+    setTaskArray([...fetched.rows]);
+    setTaskCount(fetched.count);
   }, [request]);
 
   useEffect(() => {
@@ -90,7 +92,7 @@ export default function TodoApp() {
   const setCountOfItems = async (event) => {
     const count = event.target.value;
     const data = await request(
-      `api/list/?chrono=${newChrono}&filter=${filter}&count=${count}&page=${currentPage}`,
+      `api/list/?chrono=${chrono}&filter=${filter}&count=${count}&page=${currentPage}`,
       'get'
     );
     setTaskArray(data.rows);
@@ -186,13 +188,7 @@ export default function TodoApp() {
           </div>
         </div>
         <div className="section">{taskRender()}</div>
-        {/* <Footer
-          filter={filter}
-          active={actives}
-          setFilter={changeFilter}
-          changeAll={setEveryOneStatus}
-          setChronology={setChronology}
-        /> */}
+        <div className="paginationList"></div>
       </div>
     </div>
   );
