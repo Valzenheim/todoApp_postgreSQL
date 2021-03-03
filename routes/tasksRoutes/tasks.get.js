@@ -8,6 +8,8 @@ router.get('/list/', auth, async (req, res) => {
     const userId = req.user;
     const chrono = req.query.chrono;
     const filter = req.query.filter;
+    const count = req.query.count;
+    const page = req.query.page;
 
     let searchParams = {
       ownerId: userId,
@@ -17,9 +19,11 @@ router.get('/list/', auth, async (req, res) => {
       ? (searchParams.done = filter === 'done' ? true : false)
       : searchParams;
 
-    const tasks = await Task.findAll({
+    const tasks = await Task.findAndCountAll({
       where: searchParams,
       order: chrono === 'false' ? [['createdAt', 'DESC']] : [['createdAt']],
+      offset: 0,
+      limit: count,
     });
 
     return res.status(200).json(tasks);

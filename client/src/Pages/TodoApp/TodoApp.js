@@ -13,11 +13,16 @@ export default function TodoApp() {
   const [form, setForm] = useState('');
   const [filter, setFilter] = useState('all');
   const [chrono, setChrono] = useState(true);
+  const [tasksLimit, setTasksLimit] = useState(2);
+  const [currentPage, setCurrentPage] = useState(1);
   const auth = useContext(AuthContext);
 
   const fetchTasks = useCallback(async () => {
-    const fetched = await request(`/api/list/`, 'get');
-    return setTaskArray([...fetched]);
+    const fetched = await request(
+      `/api/list/?count=${tasksLimit}&page=${currentPage}`,
+      'get'
+    );
+    return setTaskArray([...fetched.rows]);
   }, [request]);
 
   useEffect(() => {
@@ -31,18 +36,18 @@ export default function TodoApp() {
   const changeFilter = async (event) => {
     const newFilter = event.target.name;
     const data = await request(
-      `api/list/?chrono=${chrono}&filter=${newFilter}`,
+      `api/list/?chrono=${chrono}&filter=${newFilter}&count=${tasksLimit}&page=${currentPage}`,
       'get'
     );
     setFilter(newFilter);
-    setTaskArray(data);
+    setTaskArray(data.rows);
   };
 
   const editTaskName = async (target, value) => {
     const tasks = taskArray.map((item) =>
       item.id === target ? (item.taskName = value) : null
     );
-    await request('api/list', 'put', {
+    await request(`api/list/`, 'put', {
       target: { id: target },
       newValue: { taskName: value },
     });
@@ -51,11 +56,11 @@ export default function TodoApp() {
   const setChronology = async () => {
     let newChrono = !chrono;
     const data = await request(
-      `api/list/?chrono=${newChrono}&filter=${filter}`,
+      `api/list/?chrono=${newChrono}&filter=${filter}&count=${tasksLimit}&page=${currentPage}`,
       'get'
     );
     setChrono(newChrono);
-    setTaskArray([...data]);
+    setTaskArray([...data.rows]);
   };
 
   const toggleStatus = (index, status) => {
@@ -139,6 +144,9 @@ export default function TodoApp() {
             <img className="upIcon" src={up} alt={up} />
             <img className="downIcon" src={down} alt={down} />
           </div>
+          <select>
+            <option />
+          </select>
           <div className="filterButtons">
             <button
               type="button"
