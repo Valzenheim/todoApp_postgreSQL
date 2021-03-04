@@ -17,7 +17,7 @@ export default function Task({
 
   const statusChanger = async () => {
     setDone(!done);
-    await request('api/list', 'put', {
+    await request('api/task', 'put', {
       target: { id: item.id },
       newValue: { done: !done },
     });
@@ -29,7 +29,7 @@ export default function Task({
   };
 
   const itemRemover = async () => {
-    await request(`api/list/?id=${item.id}`, 'delete');
+    await request(`api/task/?id=${item.id}`, 'delete');
     setCountOfItems();
   };
 

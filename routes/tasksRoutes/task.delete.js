@@ -3,10 +3,10 @@ const router = new Router();
 const { Task } = require('../../models/task');
 const auth = require('../../middleware/auth.middleware');
 
-router.delete('/list', auth, async (req, res) => {
+router.delete('/task', auth, async (req, res) => {
   try {
     if (!req.query) {
-      throw new Error('wrong parameters');
+      throw new Error('wrong query parameters');
     }
 
     const task = await Task.destroy({

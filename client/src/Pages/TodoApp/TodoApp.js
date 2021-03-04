@@ -50,7 +50,7 @@ export default function TodoApp() {
     const tasks = taskArray.map((item) =>
       item.id === target ? (item.taskName = value) : null
     );
-    await request(`api/list/`, 'put', {
+    await request(`api/task/`, 'put', {
       target: { id: target },
       newValue: { taskName: value },
     });
@@ -83,7 +83,7 @@ export default function TodoApp() {
     if (!/[0-9a-zA-Zа-яёА-ЯЁ]/i.test(form)) {
       return null;
     }
-    const data = await request('api/list', 'post', {
+    const data = await request('api/task', 'post', {
       taskName: form,
     });
     setCountOfItems();

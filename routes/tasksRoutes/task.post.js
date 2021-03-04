@@ -3,10 +3,10 @@ const router = new Router();
 const { Task } = require('../../models/task');
 const auth = require('../../middleware/auth.middleware');
 
-router.post('/list', auth, async (req, res) => {
+router.post('/task', auth, async (req, res) => {
   try {
     const taskData = req.body;
-    const userId = req.user;
+    const userId = res.locals.user;
 
     taskData.ownerId = userId;
 
