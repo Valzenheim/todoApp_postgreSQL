@@ -16,6 +16,6 @@ module.exports = (req, res, next) => {
     res.locals.user = decoded.userId;
     next();
   } catch (e) {
-    res.status(401).json({ message: 'no authentication' });
+    res.status(401).json({ message: e.message });
   }
 };
