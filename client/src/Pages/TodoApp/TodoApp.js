@@ -44,7 +44,6 @@ export default function TodoApp() {
     setTaskArray(data.rows);
     setTaskCount(data.count);
     setCurrentPage(0);
-    //setCountOfItems();
   };
 
   const editTaskName = async (target, value) => {
@@ -87,9 +86,6 @@ export default function TodoApp() {
     const data = await request('api/list', 'post', {
       taskName: form,
     });
-    // const tasks = taskArray;
-    // tasks.push(data);
-    // setTaskArray(tasks);
     setCountOfItems();
     return setForm('');
   };
@@ -120,12 +116,10 @@ export default function TodoApp() {
     setTaskArray([...data.rows]);
     setTaskCount(data.count);
     setCurrentPage(page);
-    // fetchTasks();
   };
 
   const setCountOfItems = async (event) => {
     const count = event ? event.target.value : tasksLimit;
-    console.log('@@@@@@@ count:', count);
     const data = await request(
       `api/list/?chrono=${chrono}&filter=${filter}&count=${count}&page=${currentPage}`,
       'get'
@@ -139,8 +133,6 @@ export default function TodoApp() {
     setTaskArray(data.rows);
     setTasksLimit(count);
     setTaskCount(data.count);
-
-    // fetchTasks();
   };
 
   const taskRender = () => {

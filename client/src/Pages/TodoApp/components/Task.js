@@ -16,7 +16,6 @@ export default function Task({
   const [done, setDone] = useState(item.done);
 
   const statusChanger = async () => {
-    // toggleStatus(item.id, !item.done);
     setDone(!done);
     await request('api/list', 'put', {
       target: { id: item.id },
@@ -30,7 +29,6 @@ export default function Task({
   };
 
   const itemRemover = async () => {
-    // localItemRemover(item.id);
     await request(`api/list/?id=${item.id}`, 'delete');
     setCountOfItems();
   };
