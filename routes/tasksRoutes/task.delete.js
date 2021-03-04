@@ -5,12 +5,15 @@ const auth = require('../../middleware/auth.middleware');
 
 router.delete('/task', auth, async (req, res) => {
   try {
+    const params = req.query;
+    params.ownerId = res.locals.user;
+
     if (!req.query) {
       throw new Error('wrong query parameters');
     }
 
     const task = await Task.destroy({
-      where: req.query,
+      where: params,
     });
 
     return res.status(200).json(task);
