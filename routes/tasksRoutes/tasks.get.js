@@ -5,7 +5,7 @@ const auth = require('../../middleware/auth.middleware');
 
 router.get('/list/', auth, async (req, res) => {
   try {
-    const userId = req.user;
+    const userId = res.locals.user;
     const chrono = req.query.chrono;
     const filter = req.query.filter;
     const count = req.query.count;
