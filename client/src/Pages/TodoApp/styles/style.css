@@ -94,7 +94,8 @@
   margin: auto 20px auto auto;
 }
 
-.activeBtn {
+.activeBtn,
+.activePageNumber {
   border: 2px solid red;
   border-radius: 5px;
   background-color: lightgray;
@@ -102,7 +103,8 @@
   margin: auto 10px auto 10px;
 }
 
-.sleepBtn {
+.sleepBtn,
+.pageNumber {
   border: 1px solid #a9a9a9;
   border-radius: 5px;
   background-color: #dcdcdc;
@@ -110,7 +112,8 @@
   margin: auto 10px auto 10px;
 }
 
-.sleepBtn:hover {
+.sleepBtn,
+.pageNumber:hover {
   border: 1px solid lightsalmon;
   background-color: lightgray;
 }

@@ -8,6 +8,7 @@ export default function Task({
   editTaskName,
   toggleStatus,
   item,
+  setCountOfItems,
 }) {
   const { request } = useHttp();
   const [formStatus, setFormStatus] = useState(false);
@@ -19,6 +20,7 @@ export default function Task({
       target: { id: item.id },
       newValue: { done: item.done },
     });
+    setCountOfItems();
   };
 
   const setEditValue = (event) => {
@@ -28,6 +30,7 @@ export default function Task({
   const itemRemover = async () => {
     localItemRemover(item.id);
     await request(`api/list/?id=${item.id}`, 'delete');
+    setCountOfItems();
   };
 
   const setNewTaskValue = () => {
