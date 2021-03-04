@@ -12,7 +12,7 @@ export default function TodoApp() {
   const [taskArray, setTaskArray] = useState([]);
   const [form, setForm] = useState('');
   const [filter, setFilter] = useState('all');
-  const [chrono, setChrono] = useState(true);
+  const [chrono, setChrono] = useState(false);
   const [tasksLimit, setTasksLimit] = useState(5);
   const [currentPage, setCurrentPage] = useState(0);
   const [taskCount, setTaskCount] = useState(0);
