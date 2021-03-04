@@ -51,7 +51,7 @@ export default function TodoApp() {
       item.id === target ? (item.taskName = value) : null
     );
     await request(`api/task/`, 'put', {
-      target: { id: target },
+      id: target,
       newValue: { taskName: value },
     });
   };

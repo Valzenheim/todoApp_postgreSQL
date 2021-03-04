@@ -5,11 +5,11 @@ const auth = require('../../middleware/auth.middleware');
 
 router.get('/list/', auth, async (req, res) => {
   try {
-    const userId = res.locals.user;
+     
     const {chrono,  filter, count, page}= req.query;
     
     const searchParams = {
-      ownerId: userId,
+      ownerId: res.locals.user
     };
 
     filter !== undefined && filter !== 'all'

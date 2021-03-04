@@ -12,11 +12,11 @@ router.delete('/task', auth, async (req, res) => {
       throw new Error('wrong query parameters');
     }
 
-    const task = await Task.destroy({
+    await Task.destroy({
       where: params,
     });
 
-    return res.status(200).json(task);
+    return res.status(200).json();
   } catch (e) {
     return res.status(500).json({ message: e.message });
   }

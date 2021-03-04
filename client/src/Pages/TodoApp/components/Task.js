@@ -18,7 +18,7 @@ export default function Task({
   const statusChanger = async () => {
     setDone(!done);
     await request('api/task', 'put', {
-      target: { id: item.id },
+      id: item.id,
       newValue: { done: !done },
     });
     setCountOfItems();

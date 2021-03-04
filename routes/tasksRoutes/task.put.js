@@ -5,15 +5,17 @@ const auth = require('../../middleware/auth.middleware');
 
 router.put('/task', auth, async (req, res) => {
   try {
-    const { target, newValue } = req.body;
+    const reqObject = req.body;
 
-    if (!target || !newValue) {
+    if (!reqObject.newValue) {
       throw new Error('wrong data');
     }
 
-    const task = await Task.update(newValue, { where: target });
+    await Task.update(reqObject.newValue, {
+      where: { id: reqObject.id, ownerId: res.locals.user },
+    });
 
-    return res.status(200).json(task);
+    return res.status(200).json();
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
