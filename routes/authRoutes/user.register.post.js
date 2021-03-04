@@ -1,5 +1,6 @@
 const Router = require('express');
 const { check, validationResult } = require('express-validator');
+const bcrypt = require('bcryptjs');
 const { User } = require('../../models/user');
 const jwt = require('jsonwebtoken');
 const router = new Router();
@@ -30,6 +31,8 @@ router.post(
       if (oldUser) {
         return res.status(400).json({ message: `This user already exists` });
       }
+
+      userData.password = await bcrypt.hash(userData.password, 9);
 
       const user = await User.create(userData);
 

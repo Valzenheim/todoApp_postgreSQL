@@ -1,6 +1,7 @@
 const { Router } = require('express');
 const jwt = require('jsonwebtoken');
 const { check, validationResult } = require('express-validator');
+const bcrypt = require('bcryptjs');
 const { User } = require('../../models/user');
 const router = Router();
 
@@ -29,7 +30,9 @@ router.post(
           .json({ message: 'Wrong user login. Please try again.' });
       }
 
-      if (userData.password !== user.password) {
+      const isMatch = await bcrypt.compare(userData.password, user.password);
+
+      if (!isMatch) {
         return res
           .status(400)
           .json({ message: 'Wrong password. Please try again.' });
