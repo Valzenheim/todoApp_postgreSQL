@@ -13,12 +13,14 @@ export default function Task({
   const { request } = useHttp();
   const [formStatus, setFormStatus] = useState(false);
   const [formValue, setFormValue] = useState(item.taskName);
+  const [done, setDone] = useState(item.done);
 
   const statusChanger = async () => {
-    toggleStatus(item.id, !item.done);
+    // toggleStatus(item.id, !item.done);
+    setDone(!done);
     await request('api/list', 'put', {
       target: { id: item.id },
-      newValue: { done: item.done },
+      newValue: { done: !done },
     });
     setCountOfItems();
   };
@@ -28,7 +30,7 @@ export default function Task({
   };
 
   const itemRemover = async () => {
-    localItemRemover(item.id);
+    // localItemRemover(item.id);
     await request(`api/list/?id=${item.id}`, 'delete');
     setCountOfItems();
   };
@@ -39,7 +41,7 @@ export default function Task({
   };
 
   return (
-    <div className={item.done ? 'completed' : 'active'}>
+    <div className={done ? 'completed' : 'active'}>
       <div
         className="checkContainer"
         id={item.id}

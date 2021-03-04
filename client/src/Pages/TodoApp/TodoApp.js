@@ -37,7 +37,7 @@ export default function TodoApp() {
   const changeFilter = async (event) => {
     const newFilter = event.target.name;
     const data = await request(
-      `api/list/?chrono=${chrono}&filter=${newFilter}&count=${tasksLimit}&page=${currentPage}`,
+      `api/list/?chrono=${chrono}&filter=${newFilter}&count=${tasksLimit}&page=${0}`,
       'get'
     );
     setFilter(newFilter);
@@ -70,12 +70,14 @@ export default function TodoApp() {
   const toggleStatus = (index, status) => {
     const tasks = [...taskArray];
     tasks[taskArray.findIndex((el) => el.id === index)].done = status;
-    return setTaskArray([...tasks]);
+    setTaskArray([...tasks]);
+    setCountOfItems();
   };
 
   const localItemRemover = async (item) => {
     const tasks = taskArray.filter((x) => x.id !== item);
     setTaskArray(tasks);
+    setCountOfItems();
   };
 
   const addingNewTask = async () => {
@@ -85,9 +87,10 @@ export default function TodoApp() {
     const data = await request('api/list', 'post', {
       taskName: form,
     });
-    const tasks = taskArray;
-    tasks.push(data);
-    setTaskArray(tasks);
+    // const tasks = taskArray;
+    // tasks.push(data);
+    // setTaskArray(tasks);
+    setCountOfItems();
     return setForm('');
   };
 
@@ -97,7 +100,7 @@ export default function TodoApp() {
     for (let i = 0; i < totalPages; i++) {
       pages.push(
         <button
-          className={currentPage === i ? 'activePageNumber' : 'pageNumber'}
+          className={currentPage == i ? 'activePageNumber' : 'pageNumber'}
           value={i}
           onClick={nextCurrentPage}
         >
@@ -108,13 +111,14 @@ export default function TodoApp() {
     return pages;
   };
 
-  const nextCurrentPage = async (event) => {
-    const page = event.target.value;
+  const nextCurrentPage = async (event, num) => {
+    const page = event ? event.target.value : num;
     const data = await request(
       `api/list/?chrono=${chrono}&filter=${filter}&count=${tasksLimit}&page=${page}`,
       'get'
     );
-    setTaskArray(data.rows);
+    setTaskArray([...data.rows]);
+    setTaskCount(data.count);
     setCurrentPage(page);
     // fetchTasks();
   };
@@ -126,9 +130,16 @@ export default function TodoApp() {
       `api/list/?chrono=${chrono}&filter=${filter}&count=${count}&page=${currentPage}`,
       'get'
     );
+    if (data.rows.length === 0) {
+      return nextCurrentPage(
+        null,
+        currentPage > 0 ? currentPage - 1 : currentPage
+      );
+    }
     setTaskArray(data.rows);
     setTasksLimit(count);
     setTaskCount(data.count);
+
     // fetchTasks();
   };
 
