@@ -13,16 +13,17 @@ export default function TodoApp() {
   const [form, setForm] = useState('');
   const [filter, setFilter] = useState('all');
   const [chrono, setChrono] = useState(true);
-  const [tasksLimit, setTasksLimit] = useState(2);
-  const [currentPage, setCurrentPage] = useState(1);
-  const auth = useContext(AuthContext);
+  const [tasksLimit, setTasksLimit] = useState(5);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [taskCount, setTaskCount] = useState(0);
 
   const fetchTasks = useCallback(async () => {
     const fetched = await request(
-      `/api/list/?count=${tasksLimit}&page=${currentPage}`,
+      `/api/list/?chrono=${chrono}&filter=${filter}&count=${tasksLimit}&page=${currentPage}`,
       'get'
     );
-    return setTaskArray([...fetched.rows]);
+    setTaskArray([...fetched.rows]);
+    setTaskCount(fetched.count);
   }, [request]);
 
   useEffect(() => {
@@ -36,18 +37,20 @@ export default function TodoApp() {
   const changeFilter = async (event) => {
     const newFilter = event.target.name;
     const data = await request(
-      `api/list/?chrono=${chrono}&filter=${newFilter}&count=${tasksLimit}&page=${currentPage}`,
+      `api/list/?chrono=${chrono}&filter=${newFilter}&count=${tasksLimit}&page=${0}`,
       'get'
     );
     setFilter(newFilter);
     setTaskArray(data.rows);
+    setTaskCount(data.count);
+    setCurrentPage(0);
   };
 
   const editTaskName = async (target, value) => {
     const tasks = taskArray.map((item) =>
       item.id === target ? (item.taskName = value) : null
     );
-    await request(`api/list/`, 'put', {
+    await request(`api/task/`, 'put', {
       target: { id: target },
       newValue: { taskName: value },
     });
@@ -66,35 +69,70 @@ export default function TodoApp() {
   const toggleStatus = (index, status) => {
     const tasks = [...taskArray];
     tasks[taskArray.findIndex((el) => el.id === index)].done = status;
-    return setTaskArray([...tasks]);
+    setTaskArray([...tasks]);
+    setCountOfItems();
   };
 
   const localItemRemover = async (item) => {
     const tasks = taskArray.filter((x) => x.id !== item);
     setTaskArray(tasks);
+    setCountOfItems();
   };
 
   const addingNewTask = async () => {
     if (!/[0-9a-zA-Zа-яёА-ЯЁ]/i.test(form)) {
       return null;
     }
-    const data = await request('api/list', 'post', {
+    const data = await request('api/task', 'post', {
       taskName: form,
     });
-    const tasks = taskArray;
-    tasks.push(data);
-    setTaskArray(tasks);
+    setCountOfItems();
     return setForm('');
   };
 
-  const setCountOfItems = async (event) => {
-    const count = event.target.value;
+  const pagination = () => {
+    const totalPages = Math.ceil(taskCount / tasksLimit);
+    const pages = [];
+    for (let i = 0; i < totalPages; i++) {
+      pages.push(
+        <button
+          className={currentPage == i ? 'activePageNumber' : 'pageNumber'}
+          value={i}
+          onClick={nextCurrentPage}
+        >
+          {i + 1}
+        </button>
+      );
+    }
+    return pages;
+  };
+
+  const nextCurrentPage = async (event, num) => {
+    const page = event ? event.target.value : num;
     const data = await request(
-      `api/list/?chrono=${newChrono}&filter=${filter}&count=${count}&page=${currentPage}`,
+      `api/list/?chrono=${chrono}&filter=${filter}&count=${tasksLimit}&page=${page}`,
       'get'
     );
+    setTaskArray([...data.rows]);
+    setTaskCount(data.count);
+    setCurrentPage(page);
+  };
+
+  const setCountOfItems = async (event) => {
+    const count = event ? event.target.value : tasksLimit;
+    const data = await request(
+      `api/list/?chrono=${chrono}&filter=${filter}&count=${count}&page=${currentPage}`,
+      'get'
+    );
+    if (data.rows.length === 0) {
+      return nextCurrentPage(
+        null,
+        currentPage > 0 ? currentPage - 1 : currentPage
+      );
+    }
     setTaskArray(data.rows);
     setTasksLimit(count);
+    setTaskCount(data.count);
   };
 
   const taskRender = () => {
@@ -113,6 +151,7 @@ export default function TodoApp() {
         localItemRemover={localItemRemover}
         toggleStatus={toggleStatus}
         editTaskName={editTaskName}
+        setCountOfItems={setCountOfItems}
       />
     ));
   };
@@ -155,8 +194,9 @@ export default function TodoApp() {
             <img className="downIcon" src={down} alt={down} />
           </div>
           <select value={tasksLimit} onChange={setCountOfItems}>
-            <option value="2">2</option>
             <option value="5">5</option>
+            <option value="10">10</option>
+            <option value={taskCount}>all</option>
           </select>
           <div className="filterButtons">
             <button
@@ -186,13 +226,7 @@ export default function TodoApp() {
           </div>
         </div>
         <div className="section">{taskRender()}</div>
-        {/* <Footer
-          filter={filter}
-          active={actives}
-          setFilter={changeFilter}
-          changeAll={setEveryOneStatus}
-          setChronology={setChronology}
-        /> */}
+        <div className="paginationList">{pagination()}</div>
       </div>
     </div>
   );

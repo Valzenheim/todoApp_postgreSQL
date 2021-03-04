@@ -5,13 +5,10 @@ const auth = require('../../middleware/auth.middleware');
 
 router.get('/list/', auth, async (req, res) => {
   try {
-    const userId = req.user;
-    const chrono = req.query.chrono;
-    const filter = req.query.filter;
-    const count = req.query.count;
-    const page = req.query.page;
-
-    let searchParams = {
+    const userId = res.locals.user;
+    const {chrono,  filter, count, page}= req.query;
+    
+    const searchParams = {
       ownerId: userId,
     };
 
@@ -22,7 +19,7 @@ router.get('/list/', auth, async (req, res) => {
     const tasks = await Task.findAndCountAll({
       where: searchParams,
       order: chrono === 'false' ? [['createdAt', 'DESC']] : [['createdAt']],
-      offset: 0,
+      offset: page * count,
       limit: count,
     });
 

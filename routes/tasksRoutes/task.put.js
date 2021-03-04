@@ -3,7 +3,7 @@ const router = new Router();
 const { Task } = require('../../models/task');
 const auth = require('../../middleware/auth.middleware');
 
-router.put('/list', auth, async (req, res) => {
+router.put('/task', auth, async (req, res) => {
   try {
     const { target, newValue } = req.body;
 
