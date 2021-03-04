@@ -20,7 +20,7 @@ export default function TodoApp() {
 
   const fetchTasks = useCallback(async () => {
     const fetched = await request(
-      `/api/list/?count=${tasksLimit}&page=${currentPage}`,
+      `/api/list/?chrono=${chrono}&filter=${filter}&count=${tasksLimit}&page=${currentPage}`,
       'get'
     );
     setTaskArray([...fetched.rows]);
@@ -87,6 +87,15 @@ export default function TodoApp() {
     tasks.push(data);
     setTaskArray(tasks);
     return setForm('');
+  };
+
+  const pagination = () => {
+    const totalPages = Math.ceil(taskCount / tasksLimit);
+    const pages = [];
+    for (let i = 0; i < totalPages; i++) {
+      pages.push(<button className="pageNumber">{i + 1}</button>);
+    }
+    return pages;
   };
 
   const setCountOfItems = async (event) => {
@@ -157,8 +166,9 @@ export default function TodoApp() {
             <img className="downIcon" src={down} alt={down} />
           </div>
           <select value={tasksLimit} onChange={setCountOfItems}>
-            <option value="2">2</option>
             <option value="5">5</option>
+            <option value="10">10</option>
+            <option value={taskCount}>all</option>
           </select>
           <div className="filterButtons">
             <button
@@ -188,7 +198,7 @@ export default function TodoApp() {
           </div>
         </div>
         <div className="section">{taskRender()}</div>
-        <div className="paginationList"></div>
+        <div className="paginationList">{pagination()}</div>
       </div>
     </div>
   );

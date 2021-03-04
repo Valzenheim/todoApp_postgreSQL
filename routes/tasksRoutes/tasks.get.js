@@ -22,7 +22,7 @@ router.get('/list/', auth, async (req, res) => {
     const tasks = await Task.findAndCountAll({
       where: searchParams,
       order: chrono === 'false' ? [['createdAt', 'DESC']] : [['createdAt']],
-      offset: 0,
+      offset: page * count,
       limit: count,
     });
 
