@@ -16,7 +16,6 @@ function App() {
         userName,
         login,
         logout,
-        userId,
         isAuth,
       }}
     >

@@ -39,7 +39,6 @@ router.post(
 
       res.status(200).json({
         token,
-        userId: user.id,
         userName: user.name,
       });
     } catch (e) {
