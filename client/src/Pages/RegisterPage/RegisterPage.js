@@ -49,7 +49,7 @@ export default function RegisterPage() {
 
     const data = await request('api/register', 'post', userData);
 
-    return auth.login(data.token, data.userId, data.userName);
+    return auth.login(data.token, data.userName);
   };
 
   return (

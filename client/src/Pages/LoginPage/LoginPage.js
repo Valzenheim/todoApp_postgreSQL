@@ -29,7 +29,7 @@ export default function LoginPage() {
 
     const data = await request('/api/login', 'post', form);
 
-    auth.login(data.token, data.userId, data.userName);
+    auth.login(data.token, data.userName);
 
     return setForm({
       ...form,
